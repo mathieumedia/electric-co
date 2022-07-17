@@ -10,12 +10,11 @@ const config = {
 
 export const loginUser = userData => async dispatch => {
     try {
-        utils.BeautifyAlert({title: "From Redux", ...userData})
-        // const res = await axios.post('/api/users/loginUser', userData, config)
-        // dispatch({
-        //     type: ActionTypes.LOGIN_USER,
-        //     payload: res.data
-        // })
+        const res = await axios.post('/api/users/loginUser', userData, config)
+        dispatch({
+            type: ActionTypes.LOGIN_USER,
+            payload: res.data
+        })
     } catch (err) {
         dispatch({
             type: ActionTypes.AUTH_ERROR,

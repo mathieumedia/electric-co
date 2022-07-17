@@ -25,11 +25,11 @@ export function BgImage(){
 
 export function Glass(color){
     return {
-        backgroundColor: Color(color).alpha(0.3).toString(),
+        backgroundColor: Color(color).alpha(0.3).toString(), //SetColor(theme, props.color, 0.3),
         backgroundImage: `linear-gradient(to bottom right, 
-            ${Color(color).alpha(0.2).toString()}, ${Color(color).alpha(0).toString()}`,
-        backdropFilter: 'blur(10px)',
-        boxShadow: `10px 10px 10px ${Color(color).alpha(0.1).toString()}`
+            ${Color(color).alpha(0.2).toString()}, ${Color(color).alpha(0).toString()})`,
+        backdropFilter: `blur(10px)`,
+        boxShadow: `10px 10px 10px ${Color(color).alpha(0.1).toString()})`,
 
     }
 }

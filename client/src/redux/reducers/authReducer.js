@@ -31,7 +31,8 @@ export default function (state = initialState, action){
                 ...state,
                 token: null,
                 isAuthenticated: null,
-                authError: action.payload
+                authError: action.payload,
+                isAdmin: null
             }
         case ActionTypes.CLEAR_ERROR:
             return {

@@ -6,11 +6,18 @@ import {
 import * as utils from '../../middleware/utils'
 import GlassCard from '../../components/GlassCard'
 
+import {useDispatch, useSelector} from 'react-redux'
+import { loginUser, clearAuthError } from '../../redux/actions/authActions';
+import {toast} from 'react-toastify'
+import {useNavigate} from 'react-router-dom'
+
+
 // #region --------- ICONS -----------
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { useEffect } from 'react';
 // #endregion
 
 // #region ---------------- STYLED COMPONENTS ------------------
@@ -35,13 +42,32 @@ const CenterStack = styled(Stack)(({theme}) => ({
 
 // #endregion
 export default function LoginPage() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const {isAuthenticated, authError, isAdmin} = useSelector(state => state.auth)
+
     const [user, setUser] = useState(acctTypes[0])
     const [selectedType, setSelectedType] = useState("Admin")
     const [showPassword, setShowPassword] = useState(false)
 
     const handleLogin = () => {
-        utils.BeautifyAlert(user)
+        dispatch(loginUser(user))
     }
+
+    useEffect(() => {
+        if(authError){
+            toast(authError.message, {type: authError.type})
+            dispatch(clearAuthError())
+        }
+
+        if(isAuthenticated){
+            if(isAdmin){
+                navigate('/admin')
+            }else {
+                navigate('/customers/profile')
+            }
+        }
+    }, [isAuthenticated, isAdmin, authError, dispatch, navigate])
 
     return (
         <Div>
