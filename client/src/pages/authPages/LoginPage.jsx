@@ -42,6 +42,7 @@ export default function LoginPage() {
     const handleLogin = () => {
         utils.BeautifyAlert(user)
     }
+
     return (
         <Div>
             <CenterStack>
