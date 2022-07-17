@@ -36,6 +36,14 @@ export default createTheme({
                     textTransform: 'none'
                 }
             }
+        },
+
+        MuiSvgIcon: {
+            styleOverrides: {
+                root: {
+                    color: primary,
+                }
+            }
         }
     }
 })

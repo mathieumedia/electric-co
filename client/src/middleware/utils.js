@@ -33,3 +33,7 @@ export function Glass(color){
 
     }
 }
+
+export function BeautifyAlert(obj){
+    alert(JSON.stringify(obj, null, 4))
+}

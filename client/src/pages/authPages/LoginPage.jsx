@@ -38,6 +38,10 @@ export default function LoginPage() {
     const [user, setUser] = useState(acctTypes[0])
     const [selectedType, setSelectedType] = useState("Admin")
     const [showPassword, setShowPassword] = useState(false)
+
+    const handleLogin = () => {
+        utils.BeautifyAlert(user)
+    }
     return (
         <Div>
             <CenterStack>
@@ -93,7 +97,7 @@ export default function LoginPage() {
                             }}
                         />
 
-                        <Button>Login</Button>
+                        <Button onClick={handleLogin}>Login</Button>
                             
                     </Stack>
                 </GlassCard>
