@@ -8,6 +8,8 @@ import rob from '../backgrounds/rob-potter-unsplash.jpg'
 import visax from '../backgrounds/visax-unsplash.jpg';
 // #endregion ----------------
 
+export const drawerWidth = 240;
+
 export function BgImage(){
     const list = [
         // brian, lars, 

@@ -44,6 +44,38 @@ export default createTheme({
                     color: primary,
                 }
             }
+        },
+
+        MuiAppBar: {
+            styleOverrides: {
+                root: {
+                    padding: 0,
+                    margin: 0
+                }
+            }
+        },
+
+        MuiPaper: {
+            defaultProps: {
+                variant: 'outlined'
+            },
+            styleOverrides: {
+                root: {
+                    padding: 0,
+                    ...utils.Glass(black)
+                }
+            }
+        },
+
+        MuiListItemText: {
+            styleOverrides: {
+                root: {
+                    color: primary
+                }
+            }
         }
+
+
+
     }
 })
