@@ -10,7 +10,7 @@ import NotFound from './pages/authPages/NotFound';
 import PrivateRoute from './pages/authPages/PrivateRoute'
 
 import AdminEssentials from './pages/adminPages/AdminEssentials'
-import AdminCustomerTable from './pages/adminPages/AdminCustomerTable'
+import AdminCustomerTable from './pages/adminPages/AdminCustomerTable';
 // #endregion
 function App() {
     return (
@@ -32,6 +32,8 @@ function App() {
                         <Route path='/admin/customers' element={<PrivateRoute  />}>
                             <Route path='/admin/customers' element={<AdminCustomerTable  />} />
                         </Route>
+
+
                     </Routes>
                 </Router>
 

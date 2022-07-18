@@ -43,7 +43,7 @@ const DrawerHeader = styled('div')(({theme}) => ({
 //#endregion
 
 export default function AdminMain(props) {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     
     return (
         <Div>
