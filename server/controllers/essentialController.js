@@ -56,4 +56,17 @@ export async function updateGender(req, res){
     }
 }
 
+export async function deleteGender(req, res){
+    try{
+        
+        const {genderId} = req.params;
+
+        await Gender.findByIdAndDelete(genderId);
+
+        res.json({message: 'Gender Successfully Deleted', type: 'success'})
+    }catch(error){
+        helperController.ExportError(res, error)
+    }
+}
+
 // #endregion

@@ -53,7 +53,7 @@ export async function registerUser(req, res){
             expiresIn: 28800,
         }, (err, token) => {
             if(err) throw err
-            res.json({token})
+            res.json({token, isAdmin: newUser.isAdmin})
         })
 
     }catch(error){
@@ -71,6 +71,10 @@ export async function loginUser(req, res){
 
         let user = await User.findOne({email});
 
+        if(!user){
+            return res.status(400).json({message: 'Invalid email and/or password', type: 'error'})
+        }
+
         const isMatch = await bcrypt.compare(password, user.password)
 
         if(!isMatch){
@@ -86,7 +90,10 @@ export async function loginUser(req, res){
             expiresIn: 28800,
         }, (err, token) => {
             if(err) throw err
-            res.json({token})
+            res.json({
+                token,
+                isAdmin: user.isAdmin
+            })
         })
     }catch(error){
         helperController.ExportError({res, error})
