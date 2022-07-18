@@ -26,6 +26,21 @@ export default createTheme({
         },
 
         MuiButton: {
+            variants: [
+                {
+                    props: {variant: 'underlinedText'},
+                    style: {
+                        color: primary,
+                        textDecoration: 'underline'
+                    }
+                },
+                {
+                    props: {variant: 'outlined'},
+                    style: {
+                        color: primary,
+                    }
+                }
+            ],
             defaultProps: {
                 variant: 'contained',
                 size: 'small'
