@@ -9,6 +9,7 @@ import {
     import GenderEssentials from './essentials/GenderEssential'
     import StateEssentials from './essentials/StateEssentials'
     import BillingStatusEssential from './essentials/BillingStatusEssential'
+    import AccountTypeEssential from './essentials/AccountTypeEssential'
 //#endregion
 
 import {toast} from 'react-toastify'
@@ -41,6 +42,8 @@ export default function AdminEssentials() {
                 return <StateEssentials states={essentials?.states}/>
             case 'Billing Statuses':
                 return <BillingStatusEssential billingStatuses={essentials?.billingStatuses}/>
+            case 'Account Types':
+                return <AccountTypeEssential accountTypes={essentials?.accountTypes}/>
             default:
                 return <div>{`Create and/or Add ${selectedEssential} UI`}</div>
         }
