@@ -43,30 +43,61 @@ export default function (state = initialState, action){
             }
         // #endregion
         // #region ---- STATE -----
-        case ActionTypes.ADD_STATE:
+        // #region ---- BILLING STATUS -----
+        case ActionTypes.ADD_BILLING_STATUS:
             return {
                 ...state,
                 essentials: {
                     ...state.essentials,
-                    states: [...state.essentials.states, action.payload.state],
+                    billingStatuses: [...state.essentials.billingStatuses, action.payload.status],
                 },
                 essentialAlert: action.payload.alert
             }
-        case ActionTypes.UPDATE_STATE:
+        case ActionTypes.UPDATE_BILLING_STATUS:
             return {
                 ...state,
                 essentials:{
                     ...state.essentials,
-                    states: state.essentials.states.map(state => state._id === action.payload._id ? action.payload : state)
+                    billingStatuses: state.essentials.billingStatuses.map(billingStatus => billingStatus._id === action.payload._id ? action.payload : billingStatus)
                 },
-                essentialAlert: {message: 'State Successfully Updated', type: 'success'}
+                essentialAlert: {message: 'Status Successfully Updated', type: 'success'}
             }
-        case ActionTypes.DELETE_STATE:
+        case ActionTypes.DELETE_BILLING_STATUS:
             return {
                 ...state,
                 essentials:{
                     ...state.essentials,
-                    states: state.essentials.states.filter(state => state._id !== action.payload.id)
+                    billingStatuses: state.essentials.billingStatuses.filter(billingStatus => billingStatus._id !== action.payload.id)
+                },
+                essentialAlert: action.payload.alert
+            }
+        // #endregion
+        
+        // #region ---- ACCOUNT TYPES -----
+        case ActionTypes.ADD_ACCOUNT_TYPE:
+            return {
+                ...state,
+                essentials: {
+                    ...state.essentials,
+                    accountTypes: [...state.essentials.accountTypes, action.payload.accountType],
+                },
+                essentialAlert: action.payload.alert
+            }
+        case ActionTypes.UPDATE_ACCOUNT_TYPE:
+            return {
+                ...state,
+                essentials:{
+                    ...state.essentials,
+                    accountTypes: state.essentials.accountTypes.map(accountType =>accountType._id === action.payload._id ? action.payload : accountType)
+                },
+                essentialAlert: {message: 'Account Type Successfully Updated', type: 'success'}
+            }
+        case ActionTypes.DELETE_ACCOUNT_TYPE:
+            return {
+                ...state,
+                essentials:{
+                    ...state.essentials,
+                    accountTypes: state.essentials.accountTypes.filter(accountType =>accountType._id !== action.payload.id)
                 },
                 essentialAlert: action.payload.alert
             }

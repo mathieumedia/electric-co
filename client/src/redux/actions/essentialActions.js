@@ -125,5 +125,105 @@ export const deleteState = id => async dispatch => {
 }
 // #endregion
 
+// #region ------- BILLING STATUS METHODS -------------------
+export const addStatus = (newStatus) => async dispatch => {
+    try {
+        const res = await axios.post('/api/essentials/statuses', newStatus, config)
+        dispatch({
+            type: ActionTypes.ADD_BILLING_STATUS,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+
+export const updateStatus = billingStatus => async dispatch => {
+    try {
+        const res = await axios.patch(`/api/essentials/statuses/${billingStatus._id}`, billingStatus, config)
+        dispatch({
+            type: ActionTypes.UPDATE_BILLING_STATUS,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+
+export const deleteStatus = id => async dispatch => {
+    try {
+        const res = await axios.delete(`/api/essentials/statuses/${id}`, config)
+        dispatch({
+            type: ActionTypes.DELETE_BILLING_STATUS,
+            payload: {
+                id,
+                alert: res.data
+            }
+        })
+    } catch (err) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+// #endregion
+
+// #region ------- BILLING STATUS METHODS -------------------
+export const addAccountType = (newAccountType) => async dispatch => {
+    try {
+        const res = await axios.post('/api/essentials/accountTypes', newAccountType, config)
+        dispatch({
+            type: ActionTypes.ADD_ACCOUNT_TYPE,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+
+export const updateAccountType = accountType => async dispatch => {
+    try {
+        const res = await axios.patch(`/api/essentials/accountTypes/${accountType._id}`, accountType, config)
+        dispatch({
+            type: ActionTypes.UPDATE_ACCOUNT_TYPE,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+
+export const deleteAccountType = id => async dispatch => {
+    try {
+        const res = await axios.delete(`/api/essentials/accountTypes/${id}`, config)
+        dispatch({
+            type: ActionTypes.DELETE_ACCOUNT_TYPE,
+            payload: {
+                id,
+                alert: res.data
+            }
+        })
+    } catch (err) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+// #endregion
+
 export const clearAlert = () => async dispatch => dispatch({type: ActionTypes.CLEAR_ERROR})
 export const logoutUser = () => async dispatch => dispatch({type: ActionTypes.LOGOUT_USER})
