@@ -119,5 +119,109 @@ export async function deleteState(req, res){
         helperController.ExportError(res, error)
     }
 }
+// #endregion
+
+// #region --------- BILLING STATUS METHODS ---------------
+
+export async function addStatus(req, res){
+    try{
+        const {name} = req.body;
+
+        if(!name) return res.status(400).json({message: 'A Status name is required', type: 'error'})
+
+        let newStatus = await BillingStatus.findOne({name});
+
+        if(newStatus) return res.status(400).json({message: 'Status already exists', type: 'error'})
+
+        newStatus = new BillingStatus(req.body);
+
+        await newStatus.save();
+
+        res.json({
+            status: newStatus,
+            alert: {message: 'Status successfully created', type: 'success'}
+        })
+    }catch(error){
+        helperController.ExportError(res, error)
+    }
+}
+
+export async function updateStatus(req, res){
+    try{
+        const {statusId} = req.params;
+
+        const updatedStatus = await BillingStatus.findByIdAndUpdate(statusId, req.body, {new: true})
+
+        res.send(updatedStatus)
+    }catch(error){
+        helperController.ExportError({res, error})
+    }
+}
+
+export async function deleteStatus(req, res){
+    try{
+        
+        const {statusId} = req.params;
+
+        await BillingStatus.findByIdAndDelete(statusId);
+
+        res.json({message: 'Status Successfully Deleted', type: 'success'})
+    }catch(error){
+        helperController.ExportError(res, error)
+    }
+}
+
+// #endregion
+
+
+// #region --------- ACCOUNT TYPE METHODS ---------------
+
+export async function addAccountType(req, res){
+    try{
+        const {name, rate} = req.body;
+
+        if(!name || !rate) return res.status(400).json({message: 'A name and/or rate is required', type: 'error'})
+
+        let newType = await AccountType.findOne({name});
+
+        if(newType) return res.status(400).json({message: 'Account Type already exists', type: 'error'})
+
+        newType = new AccountType(req.body);
+
+        await newType.save();
+
+        res.json({
+            accountType: newType,
+            alert: {message: 'Account Type successfully created', type: 'success'}
+        })
+    }catch(error){
+        helperController.ExportError(res, error)
+    }
+}
+
+export async function updateAccountType(req, res){
+    try{
+        const {typeId} = req.params;
+
+        const updateAccountType = await BillingStatus.findByIdAndUpdate(typeId, req.body, {new: true})
+
+        res.json(updateAccountType)
+    }catch(error){
+        helperController.ExportError({res, error})
+    }
+}
+
+export async function deleteAccountType(req, res){
+    try{
+        
+        const {typeId} = req.params;
+
+        await AccountType.findByIdAndDelete(typeId);
+
+        res.json({message: 'Account Type Successfully Deleted', type: 'success'})
+    }catch(error){
+        helperController.ExportError(res, error)
+    }
+}
 
 // #endregion

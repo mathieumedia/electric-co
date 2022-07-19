@@ -13,4 +13,12 @@ router.post('/states', essentialController.addState)
 router.patch('/states/:stateId', essentialController.updateState)
 router.delete('/states/:stateId', essentialController.deleteState)
 
+router.post('/statuses', essentialController.addStatus)
+router.patch('/statuses/:statusId', essentialController.updateStatus)
+router.delete('/statuses/:statusId', essentialController.deleteStatus)
+
+router.post('/accountTypes', essentialController.addAccountType)
+router.patch('/accountTypes/:typeId', essentialController.updateAccountType)
+router.delete('/accountTypes/:typeId', essentialController.deleteAccountType)
+
 export default router;
