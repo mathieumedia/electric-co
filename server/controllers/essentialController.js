@@ -70,3 +70,54 @@ export async function deleteGender(req, res){
 }
 
 // #endregion
+
+// #region --------- STATE METHODS ---------------
+export async function addState(req, res){
+    try{
+        const {name, abbr} = req.body;
+
+        if(!name || !abbr) return res.status(400).json({message: 'A State name and/or Abbreviation is required', type: 'error'})
+
+        let newState = await State.findOne({name, abbr});
+
+        if(newState) return res.status(400).json({message: 'State already exists', type: 'error'})
+
+        newState = new State(req.body);
+
+        await newState.save();
+
+        res.json({
+            state: newState,
+            alert: {message: 'State successfully created', type: 'success'}
+        })
+    }catch(error){
+        helperController.ExportError(res, error)
+    }
+}
+
+export async function updateState(req, res){
+    try{
+        const {stateId} = req.params;
+
+        const updatedState = await State.findByIdAndUpdate(stateId, req.body, {new: true})
+
+        res.send(updatedState)
+    }catch(error){
+        helperController.ExportError({res, error})
+    }
+}
+
+export async function deleteState(req, res){
+    try{
+        
+        const {stateId} = req.params;
+
+        await State.findByIdAndDelete(stateId);
+
+        res.json({message: 'State Successfully Deleted', type: 'success'})
+    }catch(error){
+        helperController.ExportError(res, error)
+    }
+}
+
+// #endregion
