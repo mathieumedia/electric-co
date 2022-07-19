@@ -203,9 +203,9 @@ export async function updateAccountType(req, res){
     try{
         const {typeId} = req.params;
 
-        const updateAccountType = await BillingStatus.findByIdAndUpdate(typeId, req.body, {new: true})
+        const updatedAccountType = await AccountType.findByIdAndUpdate(typeId, req.body, {new: true})
 
-        res.json(updateAccountType)
+        res.json(updatedAccountType)
     }catch(error){
         helperController.ExportError({res, error})
     }
