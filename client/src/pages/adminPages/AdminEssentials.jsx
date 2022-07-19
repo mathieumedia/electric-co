@@ -7,6 +7,7 @@ import {
 // #region -------- COMPONENTS -----------
     import AdminMain from '../../components/AdminMain'
     import GenderEssentials from './essentials/GenderEssential'
+    import StateEssentials from './essentials/StateEssentials'
 //#endregion
 
 import {toast} from 'react-toastify'
@@ -35,6 +36,8 @@ export default function AdminEssentials() {
         switch(selectedEssential){
             case 'Genders':
                 return <GenderEssentials genders={essentials?.genders}/>
+            case 'States':
+                return <StateEssentials states={essentials?.states}/>
             default:
                 return <div>{`Create and/or Add ${selectedEssential} UI`}</div>
         }

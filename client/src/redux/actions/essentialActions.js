@@ -74,5 +74,56 @@ export const deleteGender = id => async dispatch => {
 }
 // #endregion
 
+
+// #region ------- STATE METHODS -------------------
+export const addState = (newState) => async dispatch => {
+    try {
+        const res = await axios.post('/api/essentials/states', newState, config)
+        dispatch({
+            type: ActionTypes.ADD_STATE,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+
+export const updateState = state => async dispatch => {
+    try {
+        const res = await axios.patch(`/api/essentials/states/${state._id}`, state, config)
+        dispatch({
+            type: ActionTypes.UPDATE_STATE,
+            payload: res.data
+        })
+    } catch (err) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+
+export const deleteState = id => async dispatch => {
+    try {
+        const res = await axios.delete(`/api/essentials/states/${id}`, config)
+        dispatch({
+            type: ActionTypes.DELETE_STATE,
+            payload: {
+                id,
+                alert: res.data
+            }
+        })
+    } catch (err) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: err.response.data
+        })
+    }
+}
+// #endregion
+
 export const clearAlert = () => async dispatch => dispatch({type: ActionTypes.CLEAR_ERROR})
 export const logoutUser = () => async dispatch => dispatch({type: ActionTypes.LOGOUT_USER})

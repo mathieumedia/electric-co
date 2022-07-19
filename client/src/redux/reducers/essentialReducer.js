@@ -13,7 +13,7 @@ export default function (state = initialState, action){
                 ...state,
                 essentials: action.payload
             }
-
+        // #region ---- GENDER -----
         case ActionTypes.ADD_GENDER:
             return {
                 ...state,
@@ -41,6 +41,36 @@ export default function (state = initialState, action){
                 },
                 essentialAlert: action.payload.alert
             }
+        // #endregion
+        // #region ---- STATE -----
+        case ActionTypes.ADD_STATE:
+            return {
+                ...state,
+                essentials: {
+                    ...state.essentials,
+                    states: [...state.essentials.states, action.payload.state],
+                },
+                essentialAlert: action.payload.alert
+            }
+        case ActionTypes.UPDATE_STATE:
+            return {
+                ...state,
+                essentials:{
+                    ...state.essentials,
+                    states: state.essentials.states.map(state => state._id === action.payload._id ? action.payload : state)
+                },
+                essentialAlert: {message: 'State Successfully Updated', type: 'success'}
+            }
+        case ActionTypes.DELETE_STATE:
+            return {
+                ...state,
+                essentials:{
+                    ...state.essentials,
+                    states: state.essentials.states.filter(state => state._id !== action.payload.id)
+                },
+                essentialAlert: action.payload.alert
+            }
+        // #endregion
         case ActionTypes.SET_ERROR:
             return {
                 ...state,
