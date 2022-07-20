@@ -4,14 +4,17 @@ export default mongoose.Schema({
     chargeAmount: {type: Number, default: 0},
     balance: {type: Number, default: 0},
     credit: {type: Number, default: 0},
-    status: {type: mongoose.SchemaTypes.ObjectId, ref: 'BillingStatus'},
-    dueDate: {type: Date},
-    datePaid: {type: Date},
     amountPaid: {type: Number, default: 0},
-    billingStart: {type: Date},
-    billingEnd: {type: Date},
-    billingDays: {type: Number},
+    billingDays: {type: Number, default: 0},
     billingRate: {type: Number, default: 0},
     totalKwUsed: {type: Number, default: 0},
+
+    dueDate: {type: Date},
+    duePaid: {type: Date},
+    billingStart: {type: Date},
+    billingEnd: {type: Date},
+
+    status: {type: mongoose.SchemaTypes.ObjectId, ref: 'BillingStatus'},
+
     dailyUsage: []
 })

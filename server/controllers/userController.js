@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import colors from 'colors'
 import User from '../models/User.js'
+import Customer from '../models/Customer.js'
 import * as helperController from './helperController.js'
 import dotenv from 'dotenv'
 dotenv.config();
@@ -97,6 +98,28 @@ export async function loginUser(req, res){
         })
     }catch(error){
         helperController.ExportError({res, error})
+    }
+}
+
+export async function deleteNonAdmin(req, res){
+        try{
+
+        if(req.user.isAdmin === 'false'){
+            return res.status(401).json({message: "Unauthorized Action", type: "error"})
+        }
+        const nonAdmins = await User.find({isAdmin: false});
+
+        for(let i = 0; i < nonAdmins.length; i++){
+            await Customer.findOneAndDelete({user: nonAdmins[i]._id})
+            await User.findByIdAndDelete(nonAdmins[i]._id)
+        }
+        //await User.deleteMany({isAdmin: false})
+        
+        const remaining = await User.find()
+        res.json(remaining)
+    }catch(error){
+        console.error(`ERROR: ${error.message}`.bgRed.underline.bold);
+        res.status(500).send('Server Error');
     }
 }
 

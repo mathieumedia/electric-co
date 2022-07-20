@@ -4,7 +4,8 @@ import  mongoose from 'mongoose'
 
 // #region ----------API ROUTES -----------
 import userRoutes from './routes/userRoutes.js'
-import essentialRoutes from './routes/essentialRoutes.js'
+import essentialRoutes from './routes/essentialRoutes.js';
+import customerRoutes from './routes/customerRoutes.js'
 // #endregion
 
 import dotenv from 'dotenv';
@@ -28,4 +29,5 @@ connectDB()
 
 app.use('/api/users', userRoutes)
 app.use('/api/essentials', essentialRoutes)
+app.use('/api/customers', customerRoutes)
 app.listen(PORT, () => console.info(`Server is running on port ${PORT}\n`.green.underline.bold));

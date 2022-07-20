@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 export default mongoose.Schema({
     paymentDate: {type: Date},
@@ -9,11 +9,10 @@ export default mongoose.Schema({
         cardNumber: {type: String},
         expDate: {type: Date},
         cvv: {type: Number},
-        zipcode: {type: Number},
+        zipcode: {type: String},
     },
-
     banking: {
+        accountNumber: {type: String},
         routingNumber: {type: String},
-        accountNumber: {type: String}
-    },
+    }
 })

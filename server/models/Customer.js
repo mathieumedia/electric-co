@@ -1,22 +1,23 @@
 import mongoose from 'mongoose';
 import Address from './Address.js'
 import Payment from './Payment.js'
-import MonthlyBill from './MonthlyBill.js';
+import MonthlyBill from './MonthlyBill.js'
 
 export default mongoose.model("Customer", {
     firstName: {type: String},
-    lastName: {type: String},
     middleName: {type: String},
-    user: {type: mongoose.SchemaTypes.ObjectId, required: true, ref: 'User'},
+    lastName: {type: String},
     email: {type: String},
-    gender: {type: mongoose.SchemaTypes.ObjectId,  ref: 'Gender'},
     phone: {type: String},
     dateOfBirth: {type: Date},
-    accountType: {type: mongoose.SchemaTypes.ObjectId, required: true, ref: 'AccountType'},
 
-    OrganizationName: {Type: String},
+    user: {type: mongoose.SchemaTypes.ObjectId, ref: "User", required: true},
+    gender: {type: mongoose.SchemaTypes.ObjectId, ref: "Gender"},
+    accountType: {type: mongoose.SchemaTypes.ObjectId, ref: "AccountType"},
+
+    organizationName: {type: String},
     careOf: {type: String},
     address: Address,
-    payments: Payment,
+    paymentHistory: [Payment],
     monthlyBills: [MonthlyBill]
 })
