@@ -1,6 +1,6 @@
 import {useState} from 'react'
 import {
-    styled, toolbar, AppBar,
+    styled, 
     Typography, Menu, MenuItem,
     Box, Avatar, Toolbar
 } from '@mui/material'
@@ -18,7 +18,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 //#endregion
 
 //#region  ---------- STYLED COMPOMENTS ---------
-const AppBar2 = styled(MuiAppBar)(({theme, open}) => ({
+const AppBar = styled(MuiAppBar)(({theme, open}) => ({
     transition: theme.transitions.create(['margin', 'width'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen

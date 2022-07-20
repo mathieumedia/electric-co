@@ -225,5 +225,5 @@ export const deleteAccountType = id => async dispatch => {
 }
 // #endregion
 
-export const clearAlert = () => async dispatch => dispatch({type: ActionTypes.CLEAR_ERROR})
+export const clearEssentialAlert = () => async dispatch => dispatch({type: ActionTypes.CLEAR_ERROR})
 export const logoutUser = () => async dispatch => dispatch({type: ActionTypes.LOGOUT_USER})

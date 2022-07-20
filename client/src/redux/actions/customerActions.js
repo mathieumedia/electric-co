@@ -1,0 +1,42 @@
+import * as ActionTypes from '../ActionTypes';
+import * as helper from '../../middleware/utils'
+import axios from 'axios';
+
+const config = {
+    headers: {
+        "Content-Type": 'application/json',
+        "x-auth-token": localStorage.getItem('token')
+    }
+}
+
+export const addCustomer = newCustomer => async dispatch => {
+    try {
+        helper.BeautifyAlert(newCustomer)
+        // const res = await axios.post('/api/customers', newCustomer, config)
+        // dispatch({
+        //     type: ActionTypes.ADD_CUSTOMER,
+        //     payload: res.data
+        // })
+    } catch (error) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: error.response.data
+        })
+    }
+}
+
+export const getCustomers = () => async dispatch => {
+    try {
+        const res = await axios.get('/api/customers', config)
+        dispatch({
+            type: ActionTypes.GET_CUSTOMERS,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: error.response.data
+        })
+    }
+}
+

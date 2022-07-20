@@ -39,6 +39,12 @@ export default createTheme({
                     style: {
                         color: primary,
                     }
+                },
+                {
+                    props: {variant: 'outlines'},
+                    style: {
+                        color: primary,
+                    }
                 }
             ],
             defaultProps: {

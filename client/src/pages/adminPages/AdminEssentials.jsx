@@ -14,7 +14,7 @@ import {
 
 import {toast} from 'react-toastify'
 import {useDispatch, useSelector} from 'react-redux'
-import {getEssentials, clearAlert} from '../../redux/actions/essentialActions'
+import {getEssentials, clearEssentialAlert} from '../../redux/actions/essentialActions'
 import useEnhancedEffect from '@mui/material/utils/useEnhancedEffect'
 
 
@@ -30,7 +30,7 @@ export default function AdminEssentials() {
 
         if(essentialAlert){
             toast(essentialAlert.message, {type: essentialAlert.type})
-            dispatch(clearAlert())
+            dispatch(clearEssentialAlert())
         }
     }, [essentials, essentialAlert, dispatch])
 
