@@ -11,12 +11,11 @@ const config = {
 
 export const addCustomer = newCustomer => async dispatch => {
     try {
-        helper.BeautifyAlert(newCustomer)
-        // const res = await axios.post('/api/customers', newCustomer, config)
-        // dispatch({
-        //     type: ActionTypes.ADD_CUSTOMER,
-        //     payload: res.data
-        // })
+        const res = await axios.post('/api/customers', newCustomer, config)
+        dispatch({
+            type: ActionTypes.ADD_CUSTOMER,
+            payload: res.data
+        })
     } catch (error) {
         dispatch({
             type: ActionTypes.SET_ERROR,
@@ -40,3 +39,14 @@ export const getCustomers = () => async dispatch => {
     }
 }
 
+export const getCurrentCustomer = (id) => async dispatch => {
+    
+    dispatch({
+        type: ActionTypes.FILTER_CURRENT_CUSTOMER,
+        payload: id
+    })
+}
+
+
+
+export const clearCustomerAlert = () => async dispatch => dispatch({type: ActionTypes.CLEAR_ERROR})

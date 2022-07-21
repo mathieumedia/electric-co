@@ -44,7 +44,6 @@ export default function NewCustomer({accountTypes}) {
         //handleClear()
     }
 
-    console.log(newCustomer)
     return (
         <Container maxWidth='sm'>
             <Grid container spacing={2}>

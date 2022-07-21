@@ -32,7 +32,6 @@ export function Glass(color){
             ${Color(color).alpha(0.2).toString()}, ${Color(color).alpha(0).toString()})`,
         backdropFilter: `blur(10px)`,
         boxShadow: `10px 10px 10px ${Color(color).alpha(0.1).toString()})`,
-
     }
 }
 

@@ -22,7 +22,7 @@ root.render(
                 <App />
             </ThemeProvider>
         </Provider>
-        <ToastContainer rtl={false} autoClose={3000} />
+        <ToastContainer rtl={true} autoClose={3000} />
     </React.StrictMode>
 );
 

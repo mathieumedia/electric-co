@@ -94,6 +94,31 @@ export default createTheme({
                     color: primary
                 }
             }
+        },
+        
+        MuiTableCell: {
+            defaultProps: {
+                align: 'left'
+            },
+            styleOverrides: {
+                root: {
+                    align: 'left'
+                }
+            }
+        },
+
+        MuiTableRow: {
+            variants: [
+                {
+                    props: {variant: 'hovered'},
+                    style: {
+                        '&:hover': {
+                            backgroundColor: orange[800],
+                            padding: '4px'
+                        }
+                    }
+                }
+            ]
         }
 
 

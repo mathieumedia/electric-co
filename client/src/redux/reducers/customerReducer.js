@@ -20,7 +20,11 @@ export default function (state = initialState, action){
                 customers: [...state.customers, action.payload.customer],
                 currentCustomer: action.payload.alert
             }
-
+        case ActionTypes.FILTER_CURRENT_CUSTOMER:
+            return {
+                ...state,
+                currentCustomer: state.customers.find(c => c._id === action.payload)
+            }
         // #endregion
         case ActionTypes.SET_ERROR:
             return {
