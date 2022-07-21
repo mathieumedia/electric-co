@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.get('/', auth, customerController.getCustomers)
 router.post('/', auth, customerController.addCustomer)
+router.patch('/:customerId', auth, customerController.updateCustomer)
 
 export default router;

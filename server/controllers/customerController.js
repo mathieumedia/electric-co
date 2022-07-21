@@ -56,5 +56,32 @@ export async function addCustomer(req, res){
     }
 }
 
+export async function updateCustomer(req, res){
+    try {
+        if(req.user.isAdmin === 'false'){
+            return res.status(401).json({message: "Unauthorized Action", type: 'error'})
+        }
+
+        const {customerId} = req.params;
+
+        let customer = await Customer.findByIdAndUpdate(customerId, req.body, {new: true})
+
+        if(!customer){
+            return res.status(400).json({message: "Unable to update customer. Please try again later", type:'error'})
+        }
+
+        res.json({
+            customer,
+            alert: {
+                message: "Customer Successfully Updated",
+                type: 'success'
+            }
+        })
+
+    } catch (error) {
+        helper.ExportError(res, error)
+    }
+}
+
 
 // #endregion ----------------------------------

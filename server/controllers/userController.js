@@ -102,7 +102,7 @@ export async function loginUser(req, res){
 }
 
 export async function deleteNonAdmin(req, res){
-        try{
+    try {
 
         if(req.user.isAdmin === 'false'){
             return res.status(401).json({message: "Unauthorized Action", type: "error"})
@@ -117,7 +117,7 @@ export async function deleteNonAdmin(req, res){
         
         const remaining = await User.find()
         res.json(remaining)
-    }catch(error){
+    } catch(error){
         console.error(`ERROR: ${error.message}`.bgRed.underline.bold);
         res.status(500).send('Server Error');
     }
