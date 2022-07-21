@@ -25,6 +25,13 @@ export default function (state = initialState, action){
                 ...state,
                 currentCustomer: state.customers.find(c => c._id === action.payload)
             }
+        case ActionTypes.UPDATE_CUSTOMER:
+            return {
+                ...state,
+                customers: state.customers.map(customer => customer._id === action.payload.customer._id ? action.payload.customer : customer),
+                currentCustomer: action.payload.customer,
+                customerAlert: action.payload.alert
+            }
         // #endregion
         case ActionTypes.SET_ERROR:
             return {

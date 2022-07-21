@@ -24,6 +24,22 @@ export const addCustomer = newCustomer => async dispatch => {
     }
 }
 
+export const updateCustomer = customer => async dispatch => {
+    try {
+        const res = await axios.patch(`/api/customers/${customer._id}`, customer, config)
+        dispatch({
+            type: ActionTypes.UPDATE_CUSTOMER,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: error.response.data
+        })
+    }
+}
+
+
 export const getCustomers = () => async dispatch => {
     try {
         const res = await axios.get('/api/customers', config)

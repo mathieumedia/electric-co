@@ -13,7 +13,8 @@ import {
     getEssentials, clearEssentialAlert, 
 } from '../../redux/actions/essentialActions';
 import {
-    clearCustomerAlert, getCurrentCustomer, getCustomers
+    clearCustomerAlert, getCurrentCustomer, 
+    getCustomers, updateCustomer
 } from '../../redux/actions/customerActions'
 
 import {useDispatch, useSelector} from 'react-redux'
@@ -71,6 +72,10 @@ export default function AdminCustomerAccount() {
         dispatch, essentials, customers, id, essentialAlert, customerAlert, currentCustomer
     ])
 
+    const handleUpdate = customerData => {
+        dispatch(updateCustomer(customerData))
+    }
+
     
     return (
         <AdminMain>
@@ -84,7 +89,7 @@ export default function AdminCustomerAccount() {
                     </Box>
 
                     <TabPanel value={'Profile'}>
-                        <AdminCustomerProfile account={account} essentials={essentials} />
+                        <AdminCustomerProfile account={account} essentials={essentials} onUpdate={handleUpdate}/>
                     </TabPanel>
                     <TabPanel value={'Billing'}>
                         <AdminCustomerBilling account={account} essentials={essentials} />

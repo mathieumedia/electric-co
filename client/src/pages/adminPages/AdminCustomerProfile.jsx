@@ -7,7 +7,7 @@ import {DatePicker} from '@mui/x-date-pickers/DatePicker'
 import {getName, } from '../../middleware/utils'
 import Address from '../../components/Address'
 
-export default function AdminCustomerProfile({account, essentials}) {
+export default function AdminCustomerProfile({account, essentials, onUpdate}) {
     const [profile, setProfile] = useState(null)
     const [onEdit, setOnEdit] = useState(false)
 
@@ -22,6 +22,7 @@ export default function AdminCustomerProfile({account, essentials}) {
     }
 
     const handleUpdate = () => {
+        onUpdate(profile)
         setOnEdit(false)
     }
 
