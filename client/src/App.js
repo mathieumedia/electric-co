@@ -11,6 +11,8 @@ import PrivateRoute from './pages/authPages/PrivateRoute'
 
 import AdminEssentials from './pages/adminPages/AdminEssentials'
 import AdminCustomer from './pages/adminPages/AdminCustomer';
+import AdminCustomerAccount from './pages/adminPages/AdminCustomerAccount';
+
 // #endregion
 function App() {
     return (
@@ -31,6 +33,10 @@ function App() {
 
                         <Route path='/admin/customers' element={<PrivateRoute  />}>
                             <Route path='/admin/customers' element={<AdminCustomer />} />
+                        </Route>
+
+                        <Route path='/admin/customers/account/:id' element={<PrivateRoute  />}>
+                            <Route path='/admin/customers/account/:id' element={<AdminCustomerAccount />} />
                         </Route>
 
 

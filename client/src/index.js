@@ -9,6 +9,8 @@ import {Provider} from 'react-redux'
 
 import { ThemeProvider } from '@mui/material/styles';
 import { ToastContainer } from 'react-toastify';
+import {AdapterLuxon} from '@mui/x-date-pickers/AdapterLuxon'
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 import 'react-toastify/dist/ReactToastify.css';
 import 'simplebar/dist/simplebar.min.css';
@@ -19,7 +21,9 @@ root.render(
     <React.StrictMode>
         <Provider store={store}>
             <ThemeProvider theme={theme}>
-                <App />
+                <LocalizationProvider dateAdapter={AdapterLuxon}>
+                    <App />
+                </LocalizationProvider>
             </ThemeProvider>
         </Provider>
         <ToastContainer rtl={true} autoClose={3000} />

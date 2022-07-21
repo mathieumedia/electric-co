@@ -1,3 +1,5 @@
+import {toast} from 'react-toastify'
+
 import Color from 'color'
 // #region ------ Background Images --------------
 import brian from '../backgrounds/brian-wangenheim-unsplash.jpg';
@@ -38,3 +40,17 @@ export function Glass(color){
 export function BeautifyAlert(obj){
     alert(JSON.stringify(obj, null, 4))
 }
+
+export function Alert(message, type, dispatch, clear){
+    toast(message, {type: type})
+    if(clear) dispatch(clear())
+}
+
+export function getName(arr, id){
+    if(arr && id){
+        return (arr.find(obj => obj._id === id)).name
+    }
+
+    return ''
+}
+

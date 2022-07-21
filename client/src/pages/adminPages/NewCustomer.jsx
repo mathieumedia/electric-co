@@ -7,6 +7,7 @@ import {
 import {toast} from 'react-toastify'
 import {addCustomer} from '../../redux/actions/customerActions'
 import {useDispatch} from 'react-redux'
+import * as utils from '../../middleware/utils'
 
 export default function NewCustomer({accountTypes}) {
     const dispatch = useDispatch()
@@ -29,15 +30,24 @@ export default function NewCustomer({accountTypes}) {
 
     const handleSave = () => {
         if(!newCustomer.email || !newCustomer.address.zip){
-            return toast("Please provide a valid email and/or zipcode", {type: 'error'})
+            return utils.Alert(
+                "Please provide a valid email and/or zipcode",
+                "error",
+            )
         }
 
         if(isPersonal && (!newCustomer.firstName || !newCustomer.lastName)){
-            return toast("Please provide a valid first and/or last names", {type: 'error'})
+            return utils.Alert(
+                "Please provide a valid first and/or last names", 
+                'error'
+            )
         }
 
         if(!isPersonal && !newCustomer.organizationName){
-            return toast("Please provide a valid company names", {type: 'error'})
+            return utils.Alert(
+                "Please provide a valid company names",
+                'error'
+            )
         }
 
         dispatch(addCustomer(newCustomer))

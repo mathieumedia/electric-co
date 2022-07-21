@@ -119,6 +119,19 @@ export default createTheme({
                     }
                 }
             ]
+        },
+
+        MuiTypography:{
+            variants: [
+                {
+                    props: {variant: 'shaded'},
+                    style: {
+                        backgroundColor: primary,
+                        color: white,
+                        padding: '4px'
+                    }
+                }
+            ]
         }
 
 
