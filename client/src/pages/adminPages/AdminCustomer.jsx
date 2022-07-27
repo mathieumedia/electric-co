@@ -50,8 +50,14 @@ export default function AdminCustomer() {
         } 
 
         if(customers && essentials) {
-            const personalAcc = essentials.accountTypes.find(a => a.name === 'Personal')
-            const commercialAcc = essentials.accountTypes.find(a => a.name === 'Commercial')
+            const personalAcc = essentials?.accountTypes?.find(a => a.name === 'Personal')
+
+            
+            const commercialAcc = essentials?.accountTypes?.find(a => a.name === 'Commercial')
+
+            // console.log("Personal", personalAcc)
+            // console.log("Commercial", commercialAcc)
+
             setPersonalCustomers(customers.filter(c => c.accountType === personalAcc._id))
             setCommercialCustomers(customers.filter(c => c.accountType === commercialAcc._id))
         }

@@ -18,7 +18,8 @@ export default function (state = initialState, action){
             return {
                 ...state,
                 customers: [...state.customers, action.payload.customer],
-                currentCustomer: action.payload.alert
+                currentCustomer: action.payload.customer,
+                customerAlert: action.payload.alert
             }
         case ActionTypes.FILTER_CURRENT_CUSTOMER:
             return {

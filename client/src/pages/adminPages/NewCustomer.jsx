@@ -1,21 +1,32 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import {
     Button, Grid, TextField, 
     MenuItem, Container
 } from '@mui/material';
-
-import {toast} from 'react-toastify'
-import {addCustomer} from '../../redux/actions/customerActions'
-import {useDispatch} from 'react-redux'
+import {DatePicker} from '@mui/x-date-pickers/DatePicker'
+import {useNavigate} from 'react-router-dom'
+import {addCustomer, clearCustomerAlert} from '../../redux/actions/customerActions'
+import {useDispatch, useSelector} from 'react-redux'
 import * as utils from '../../middleware/utils'
 
+
 export default function NewCustomer({accountTypes}) {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const {customerAlert, currentCustomer } = useSelector(state => state.customers)
+
+    useEffect(() => {
+        if(currentCustomer && customerAlert?.type === 'success'){
+            dispatch(clearCustomerAlert());
+            navigate(`/admin/customers/account/${currentCustomer._id}`)
+        }
+    },[navigate, customerAlert, currentCustomer, dispatch])
     const resetNewCustomer = () => {
         return {
             accountType: accountTypes ? accountTypes[0]._id : '',
             firstName: '',
             lastName: '',
+            dateOfBirth: new Date() || '',
             organizationName: '',
             email: '',
             address: {zip: ''}
@@ -36,9 +47,9 @@ export default function NewCustomer({accountTypes}) {
             )
         }
 
-        if(isPersonal && (!newCustomer.firstName || !newCustomer.lastName)){
+        if(isPersonal && (!newCustomer.firstName || !newCustomer.lastName || !newCustomer.dateOfBirth)){
             return utils.Alert(
-                "Please provide a valid first and/or last names", 
+                "Please provide a valid first/last names and/or date of birth", 
                 'error'
             )
         }
@@ -91,18 +102,32 @@ export default function NewCustomer({accountTypes}) {
                         onChange={e => setNewCustomer({...newCustomer, organizationName: e.target.value})}
                     />
                 </Grid>
+
+                <Grid item xs={12} sm={6} sx={{display: isPersonal ? 'block' : 'none'}}>
+                    <DatePicker
+                        views={["year", "month", "day"]}
+                        disableFuture 
+                        label='Date Of Birth' value={newCustomer?.dateOfBirth || ''}
+                        onChange={(newValue) => setNewCustomer({...newCustomer, dateOfBirth: newValue})}
+                        renderInput={(params) => <TextField {...params}  />} 
+                    />
+                </Grid>
+                
+                <Grid item xs={12} sm={!isPersonal ? 12 : 6}>
+                    <TextField
+                        label="Zip Code"
+                        value={newCustomer?.address?.zip}
+                        onChange={e => setNewCustomer({...newCustomer, address: {zip: e.target.value}})}
+                    />
+                </Grid>
+
+                
+
                 <Grid item xs={12} >
                     <TextField
                         label="Email"
                         value={newCustomer?.email}
                         onChange={e => setNewCustomer({...newCustomer, email: e.target.value})}
-                    />
-                </Grid>
-                <Grid item xs={12} >
-                    <TextField
-                        label="Zip Code"
-                        value={newCustomer?.address?.zip}
-                        onChange={e => setNewCustomer({...newCustomer, address: {zip: e.target.value}})}
                     />
                 </Grid>
 
