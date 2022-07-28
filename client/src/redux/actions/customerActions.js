@@ -77,6 +77,21 @@ export const addCustomerBill = newBill => async dispatch => {
     }
 }
 
+export const deleteAllCustomers = () => async dispatch =>  {
+    try {
+        const res = await axios.delete("/api/customers/all", config)
+        dispatch({
+            type: ActionTypes.DELETE_ALL_CUSTOMERS,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: error.response.data
+        })
+    }
+}
+
 
 
 export const clearCustomerAlert = () => async dispatch => dispatch({type: ActionTypes.CLEAR_ERROR})

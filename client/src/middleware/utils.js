@@ -41,8 +41,8 @@ export function BeautifyAlert(obj){
     alert(JSON.stringify(obj, null, 4))
 }
 
-export function Alert(message, type, dispatch, clear){
-    toast(message, {type: type})
+export function Alert(alert, dispatch, clear){
+    toast(alert.message, {type: alert.type})
     if(clear) dispatch(clear())
 }
 

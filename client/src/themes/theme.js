@@ -40,12 +40,6 @@ export default createTheme({
                         color: primary,
                     }
                 },
-                {
-                    props: {variant: 'outlines'},
-                    style: {
-                        color: primary,
-                    }
-                }
             ],
             defaultProps: {
                 variant: 'contained',

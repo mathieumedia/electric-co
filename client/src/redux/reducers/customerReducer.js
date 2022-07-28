@@ -33,6 +33,12 @@ export default function (state = initialState, action){
                 currentCustomer: action.payload.customer,
                 customerAlert: action.payload.alert
             }
+        case ActionTypes.DELETE_ALL_CUSTOMERS:
+            return {
+                ...state,
+                customers: [],
+                customerAlert: action.payload
+            }
         // #endregion
         case ActionTypes.SET_ERROR:
             return {
