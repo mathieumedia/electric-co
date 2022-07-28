@@ -1,10 +1,18 @@
 import express from 'express';
 import * as customerController from '../controllers/customerController.js';
-import auth from './authRoute.js'
+import {adminAuth, userAuth} from './authRoute.js'
 const router = express.Router();
 
-router.get('/', auth, customerController.getCustomers)
-router.post('/', auth, customerController.addCustomer)
-router.patch('/:customerId', auth, customerController.updateCustomer)
+
+//#region ------ ADMIN ROUTES ---------------------
+router.get('/', adminAuth, customerController.getCustomers)
+router.post('/', adminAuth, customerController.addCustomer)
+router.patch('/:customerId', adminAuth, customerController.updateCustomer)
+
+router.post('/bills', adminAuth, customerController.addCustomerBill)
+//#endregion
+
+//#region ------ PAYMENT ROUTES ---------------------
+//#endregion
 
 export default router;

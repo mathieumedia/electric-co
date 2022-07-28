@@ -10,7 +10,7 @@ export default mongoose.Schema({
     totalKwUsed: {type: Number, default: 0},
 
     dueDate: {type: Date},
-    duePaid: {type: Date},
+    paidDate: {type: Date},
     billingStart: {type: Date},
     billingEnd: {type: Date},
 

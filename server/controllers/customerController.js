@@ -1,5 +1,7 @@
 import Customer from '../models/Customer.js';
 import MonthlyBill from '../models/MonthlyBill.js'
+import AccountType from '../models/AccountType.js'
+import BillingStatus from '../models/BillingStatus.js'
 import Address from '../models/Address.js'
 import User from '../models/User.js'
 import * as helper from './helperController.js'
@@ -8,10 +10,6 @@ import bcrypt from 'bcryptjs'
 // #region ------------- CUSTOMER BASICS ------------
 export async function getCustomers(req, res){
     try{
-        if(req.user.isAdmin === "false"){
-            return res.status(401).json({message: "Unauthorized Access", type: 'error'})
-        }
-
         const customers = await Customer.find().select('-__v')
 
         res.json(customers)
@@ -22,10 +20,6 @@ export async function getCustomers(req, res){
 
 export async function addCustomer(req, res){
     try {
-
-        if(req.user.isAdmin === "false"){
-            return res.status(401).json({message: "Unauthorized Access", type: 'error'})
-        }
 
         const {email, address} = req.body;
 
@@ -50,7 +44,10 @@ export async function addCustomer(req, res){
 
         if(!newUser) return res.status(400).json({message: 'Unable to create New Customer. Please try again at later time', type: 'error'})
         
-        res.json(newCustomer)
+        res.json({
+            customer: newCustomer,
+            alert: {message: "Customer Successfully Added", type: 'success'}
+        })
     } catch (error) {
         helper.ExportError(res, error)
     }
@@ -58,9 +55,6 @@ export async function addCustomer(req, res){
 
 export async function updateCustomer(req, res){
     try {
-        if(req.user.isAdmin === 'false'){
-            return res.status(401).json({message: "Unauthorized Action", type: 'error'})
-        }
 
         const {customerId} = req.params;
 
@@ -83,5 +77,88 @@ export async function updateCustomer(req, res){
     }
 }
 
+export async function addCustomerBill(req, res){
+    try {
+
+        const {customerId, year, month} = req.body;
+
+        let customer = await Customer.findById(customerId)
+
+        if(!customer){
+            return res.status(400).json({message: 'Unable to locate Customer. Please try again later', type: 'error'})
+        }
+
+        const accountType = await AccountType.findById(customer.accountType)
+
+        if(!accountType){
+            return res.status(400).json({message: 'Unable to create new customer Bill. Please try again later', type: 'error'})
+        }
+
+        const newBill = await createBill({year,  month, accountType })
+        customer.monthlyBills.push(newBill)
+
+        await customer.save();
+
+        res.json({
+            customer,
+            alert: {
+                message: "Successfully Created customer bill", type: 'success'
+            }
+        })
+
+    } catch (error) {
+        helper.ExportError(res, error)
+    }
+}
+
 
 // #endregion ----------------------------------
+
+//#region Helper methods
+async function createBill({year, month, accountType}){
+    const billingEnd = new Date(year, month, 0)
+    const billingDays = billingEnd.getDate();
+    const billingStart = new Date(billingEnd).setDate(1)
+    const dueDate = billingEnd.addDays(15)
+
+    console.log(accountType)
+
+    let bill = {
+        billingStart,
+        billingEnd,
+        billingDays,
+        dueDate,
+        billingRate: accountType.rate,
+        dailyUsage: []
+    }
+
+    for(let i = 0; i < billingDays; i++){
+        const usage = Math.floor(Math.random() * (37 - 20) + 20)
+        const dailyCost = usage * accountType.rate
+
+        bill.dailyUsage.push({
+            kwhUsed: usage,
+            date: new Date(`${year}-${month}-${i + 1}`),
+            dailyCost
+        })
+    }
+
+    const chargeAmount = bill.dailyUsage.reduce((acc, daily) => { return acc + daily.dailyCost}, 0);
+    const totalKwUsed = bill.dailyUsage.reduce((acc, daily) => { return acc + daily.kwhUsed}, 0)
+    bill.chargeAmount = chargeAmount;
+    bill.balance = chargeAmount
+    bill.totalKwUsed = totalKwUsed
+
+    const status = await BillingStatus.findOne({name: "Current"})
+
+    bill.status = status._id
+    
+    bill.chargeAmount = chargeAmount
+
+    return bill;
+}
+
+Date.prototype.addDays = function (days){
+    let date = new Date(this.valueOf())
+    return date.setDate(date.getDate() + days)
+}
