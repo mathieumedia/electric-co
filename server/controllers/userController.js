@@ -101,25 +101,5 @@ export async function loginUser(req, res){
     }
 }
 
-export async function deleteNonAdmin(req, res){
-    try {
 
-        if(req.user.isAdmin === 'false'){
-            return res.status(401).json({message: "Unauthorized Action", type: "error"})
-        }
-        const nonAdmins = await User.find({isAdmin: false});
-
-        for(let i = 0; i < nonAdmins.length; i++){
-            await Customer.findOneAndDelete({user: nonAdmins[i]._id})
-            await User.findByIdAndDelete(nonAdmins[i]._id)
-        }
-        //await User.deleteMany({isAdmin: false})
-        
-        const remaining = await User.find()
-        res.json(remaining)
-    } catch(error){
-        console.error(`ERROR: ${error.message}`.bgRed.underline.bold);
-        res.status(500).send('Server Error');
-    }
-}
 

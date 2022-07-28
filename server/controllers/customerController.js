@@ -18,6 +18,25 @@ export async function getCustomers(req, res){
     }
 }
 
+export async function deleteAllCustomers(req, res){
+    try {
+
+        // const nonAdmins = await User.find({isAdmin: false});
+
+        // for(let i = 0; i < nonAdmins.length; i++){
+        //     await Customer.findOneAndDelete({user: nonAdmins[i]._id})
+        //     await User.findByIdAndDelete(nonAdmins[i]._id)
+        // }
+
+        console.log("deleting")
+        
+        res.json({message: "All Non Admin accounts have been deleted", type: "success"})
+    } catch(error){
+        console.error(`ERROR: ${error.message}`.bgRed.underline.bold);
+        res.status(500).send('Server Error');
+    }
+}
+
 export async function addCustomer(req, res){
     try {
 
