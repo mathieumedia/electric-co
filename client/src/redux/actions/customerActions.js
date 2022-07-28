@@ -1,7 +1,6 @@
 import * as ActionTypes from '../ActionTypes';
 import * as helper from '../../middleware/utils'
 import axios from 'axios';
-import { useTabsList } from '@mui/base';
 
 const config = {
     headers: {
@@ -40,7 +39,6 @@ export const updateCustomer = customer => async dispatch => {
     }
 }
 
-
 export const getCustomers = () => async dispatch => {
     try {
         const res = await axios.get('/api/customers', config)
@@ -62,6 +60,21 @@ export const getCurrentCustomer = (id) => async dispatch => {
         type: ActionTypes.FILTER_CURRENT_CUSTOMER,
         payload: id
     })
+}
+
+export const addCustomerBill = newBill => async dispatch => {
+    try {
+        const res = await axios.post("/api/customers/bills", newBill, config)
+        dispatch({
+            type: ActionTypes.UPDATE_CUSTOMER,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: error.response.data
+        })
+    }
 }
 
 

@@ -14,12 +14,11 @@ import {
 } from '../../redux/actions/essentialActions';
 import {
     clearCustomerAlert, getCurrentCustomer, 
-    getCustomers, updateCustomer
+    getCustomers, updateCustomer, addCustomerBill
 } from '../../redux/actions/customerActions'
 
 import {useDispatch, useSelector} from 'react-redux'
 import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import * as utils from '../../middleware/utils'
 
 import AdminCustomerProfile from './AdminCustomerProfile';
@@ -32,7 +31,7 @@ export default function AdminCustomerAccount() {
     const dispatch = useDispatch();
     const {essentials, essentialAlert} = useSelector(state => state.essentials)
     const {customers, customerAlert, currentCustomer} = useSelector(state => state.customers)
-
+    const [newBill, setNewBill] = useState({year: new Date().getFullYear(), month: ''})
     const [account, setAccount] = useState(null)
     
     //#region ---- Tab Controls -----------
@@ -77,6 +76,22 @@ export default function AdminCustomerAccount() {
     }
 
     
+
+    const handleCreateNewBill = () => {
+
+        if(!newBill.year || !newBill.month){
+            return utils.Alert("A Billing Month and/or Year is required", "error")
+        }
+
+        dispatch(addCustomerBill({...newBill, customerId: id}))
+    }
+
+    const newBillObject = {
+        newBill,
+        setNewBill,
+        handleCreateNewBill
+    }
+
     return (
         <AdminMain>
             <Paper>
@@ -92,7 +107,11 @@ export default function AdminCustomerAccount() {
                         <AdminCustomerProfile account={account} essentials={essentials} onUpdate={handleUpdate}/>
                     </TabPanel>
                     <TabPanel value={'Billing'}>
-                        <AdminCustomerBilling account={account} essentials={essentials} />
+                        <AdminCustomerBilling 
+                            account={account} 
+                            essentials={essentials} 
+                            newBillObject={newBillObject}
+                        />
                     </TabPanel>
                 </TabContext>
             </Paper>

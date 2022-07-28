@@ -71,3 +71,34 @@ export function billingMonths () {
     ]
 }
 
+export function getMonthYear(date){
+    if(date){
+        const newDate = new Date(date);
+        const month = billingMonths()[newDate.getMonth()].label
+        const year = newDate.getFullYear()
+        return `${month}-${year}`
+    }
+
+    return ''
+}
+
+export function formatCurrency(amount){
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 0
+    })
+
+    return formatter.format(amount)
+}
+
+export function shortDate(date){
+    if(date){
+        const newDate = new Date(date);
+        return `${newDate.getMonth() + 1}/${newDate.getDate()}/${newDate.getFullYear()}`
+    }
+    return ''
+}
+
+
+
