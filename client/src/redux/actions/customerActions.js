@@ -92,6 +92,21 @@ export const deleteAllCustomers = () => async dispatch =>  {
     }
 }
 
+export const repopulateCustomers = () => async dispatch => {
+        try {
+        const res = await axios.get('/api/customers/repopulate', config)
+        dispatch({
+            type: ActionTypes.GET_CUSTOMERS,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: error.response.data
+        })
+    }
+}
+
 
 
 export const clearCustomerAlert = () => async dispatch => dispatch({type: ActionTypes.CLEAR_ERROR})

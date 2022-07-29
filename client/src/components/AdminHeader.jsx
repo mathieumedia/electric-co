@@ -9,7 +9,7 @@ import * as utils from '../middleware/utils'
 
 import {useDispatch, useSelector} from 'react-redux'
 import {logoutUser} from '../redux/actions/authActions'
-import {deleteAllCustomers, clearCustomerAlert} from '../redux/actions/customerActions'
+import {deleteAllCustomers, clearCustomerAlert, repopulateCustomers} from '../redux/actions/customerActions'
 import {useNavigate} from 'react-router-dom'
 
 import Popup from './Popup'
@@ -41,6 +41,9 @@ export default function AdminHeader(props) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [open, setOpen] = useState(false)
+    const [onPopulate, setOnPopulate] = useState(false)
+
+    
 
     const {customerAlert} = useSelector(state => state.customers)
 
@@ -50,6 +53,12 @@ export default function AdminHeader(props) {
     const handleUserCloseMenu = (event) => {
         setAnchorElUser(null)
     }
+
+    const handleCancel = () => {
+        setOpen(false)
+        setOnPopulate(false)
+        handleUserCloseMenu()
+    }
     
     const handleLogout = () => {
         dispatch(logoutUser());
@@ -57,15 +66,26 @@ export default function AdminHeader(props) {
         navigate('/')
     }
 
-    const handleDeleteNonAdmins = () => {
+    const handleDeleteCustomers = () => {
+        setOpen(true)
+        setOnPopulate(false)
+        handleUserCloseMenu()
+    }
+    const handleRepopulateCustomer = () => {
+        setOnPopulate(true)
         setOpen(true)
         handleUserCloseMenu()
     }
 
-    const handleConfirmDelete = () => {
+    const handleConfirmDeleteCustomers = () => {
         dispatch(deleteAllCustomers())
         setOpen(false)
         handleUserCloseMenu()
+    }
+
+    const handleConfirmPopulate = () => {
+        dispatch(repopulateCustomers())
+        handleCancel()
     }
 
     useEffect(() => {
@@ -73,6 +93,13 @@ export default function AdminHeader(props) {
             utils.Alert(customerAlert, dispatch, clearCustomerAlert)
         }
     })
+
+    function Title(){
+        return onPopulate
+            ?   "Are you sure you want to repopulate customer table?"
+            :   "Are you sure you want to delete all customers?"
+    }
+    
     return (
         <AppBar position='fixed' open={props.open}>
             <Toolbar>
@@ -111,8 +138,11 @@ export default function AdminHeader(props) {
                         open={Boolean(anchorElUser)}
                         onClose={handleUserCloseMenu}
                     >
-                        <MenuItem onClick={handleDeleteNonAdmins}>
+                        <MenuItem onClick={handleDeleteCustomers}>
                             <Typography textAlign='center'>Delete Customers</Typography>
+                        </MenuItem>
+                        <MenuItem onClick={handleRepopulateCustomer}>
+                            <Typography textAlign='center'>Repopulate</Typography>
                         </MenuItem>
                         <Divider />
                         <MenuItem onClick={handleLogout}>
@@ -121,8 +151,11 @@ export default function AdminHeader(props) {
                     </Menu>
                 </Box>
             </Toolbar>
-            <Popup title={"Are you sure you want to delete all customers?"} open={open}>
-                <Confirmation cancel={() => setOpen(false)} confirm={handleConfirmDelete} />
+            <Popup title={Title()} open={open}>
+                <Confirmation 
+                    cancel={handleCancel} 
+                    confirm={onPopulate ? handleConfirmPopulate : handleConfirmDeleteCustomers} 
+                />
             </Popup>
         </AppBar>
     )

@@ -4,8 +4,11 @@ import AccountType from '../models/AccountType.js'
 import BillingStatus from '../models/BillingStatus.js'
 import Address from '../models/Address.js'
 import User from '../models/User.js'
+import State from '../models/State.js'
+import Gender from '../models/Gender.js'
 import * as helper from './helperController.js'
 import bcrypt from 'bcryptjs'
+import customerData from '../data/customers.js'
 
 // #region ------------- CUSTOMER BASICS ------------
 export async function getCustomers(req, res){
@@ -21,19 +24,64 @@ export async function getCustomers(req, res){
 export async function deleteAllCustomers(req, res){
     try {
 
-        // const nonAdmins = await User.find({isAdmin: false});
+        const nonAdmins = await User.find({isAdmin: false});
 
-        // for(let i = 0; i < nonAdmins.length; i++){
-        //     await Customer.findOneAndDelete({user: nonAdmins[i]._id})
-        //     await User.findByIdAndDelete(nonAdmins[i]._id)
-        // }
-
-        console.log("deleting")
+        for(let i = 0; i < nonAdmins.length; i++){
+            await Customer.findOneAndDelete({user: nonAdmins[i]._id})
+            await User.findByIdAndDelete(nonAdmins[i]._id)
+        }
         
         res.json({message: "All Non Admin accounts have been deleted", type: "success"})
     } catch(error){
         console.error(`ERROR: ${error.message}`.bgRed.underline.bold);
         res.status(500).send('Server Error');
+    }
+}
+
+export async function repopulateCustomers(req, res){
+    try {
+        const customerList = []
+        for(let i = 0; i < customerData.length; i++){
+            let newCustomer = await Customer.findOne({email: customerData[i].email})
+
+            if(!newCustomer){
+                
+                newCustomer = customerData[i];
+                
+                const accountType = await AccountType.findOne({name: newCustomer.accountType});
+                const state = await State.findOne({abbr: newCustomer.address.state})
+
+                newCustomer.accountType = accountType._id
+                newCustomer.address.state = state._id
+                if(newCustomer.gender){
+                    newCustomer.gender = (await Gender.findOne({abbr: newCustomer.gender}))._id
+                }
+                newCustomer.monthlyBills = []
+
+                for(let b = 0; b < new Date().getMonth(); b++){
+                    const bill = await createBill({year: 2022, month: b + 1, accountType})
+                    newCustomer.monthlyBills.push(bill)
+                }
+
+                newCustomer = new Customer(newCustomer)
+
+                // #region ---- User creation
+                const user = new User({email: newCustomer.email, password: newCustomer.address.zip})
+                const salt = await bcrypt.genSalt(10)
+
+                user.password = await bcrypt.hash(user.password, salt)
+                await user.save();
+                newCustomer.user = user._id;
+                //#endregion
+
+                await newCustomer.save()
+                customerList.push(newCustomer)
+            }
+        }
+
+        res.json(customerList)
+    } catch (error) {
+        helper.ExportError(res, error)
     }
 }
 
@@ -96,6 +144,7 @@ export async function updateCustomer(req, res){
     }
 }
 
+//#region ------ BILLING METHODS -------
 export async function addCustomerBill(req, res){
     try {
 
@@ -130,7 +179,6 @@ export async function addCustomerBill(req, res){
     }
 }
 
-
 // #endregion ----------------------------------
 
 //#region Helper methods
@@ -139,8 +187,6 @@ async function createBill({year, month, accountType}){
     const billingDays = billingEnd.getDate();
     const billingStart = new Date(billingEnd).setDate(1)
     const dueDate = billingEnd.addDays(15)
-
-    console.log(accountType)
 
     let bill = {
         billingStart,
@@ -168,7 +214,11 @@ async function createBill({year, month, accountType}){
     bill.balance = chargeAmount
     bill.totalKwUsed = totalKwUsed
 
-    const status = await BillingStatus.findOne({name: "Current"})
+    const dayDifference = (new Date().getTime() - billingEnd.getTime()) / (1000 * 3600 * 24)
+
+    const status = dayDifference <= 15 
+        ?   await BillingStatus.findOne({name: "Current"})
+        :   await BillingStatus.findOne({name: "Past Due"})
 
     bill.status = status._id
     

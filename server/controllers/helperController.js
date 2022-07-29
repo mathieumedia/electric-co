@@ -2,7 +2,9 @@ import colors from 'colors'
 
 
 export function ExportError(res, error){
-    console.error(`ERROR: ${error.message}`.bgRed.underline.bold)
+    error.message   
+        ?   console.error(`ERROR: ${error.message}`.bgRed.underline.bold)
+        :   console.error(`ERROR: ${error}`.bgRed.underline.bold)
     res.status(500).send('Server Error')
 }
 
