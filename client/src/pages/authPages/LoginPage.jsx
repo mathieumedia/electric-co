@@ -125,7 +125,6 @@ export default function LoginPage() {
                         />
 
                         <Button onClick={handleLogin}>Login</Button>
-                            
                     </Stack>
                 </GlassCard>
             </CenterStack>
@@ -135,6 +134,6 @@ export default function LoginPage() {
 
 const acctTypes = [
     {type: 'Admin', email: 'adminOne@mail.com', password: 'password123'},
-    {type: 'Commercial', email: 'commercial@mail.com', password: 'password123'},
-    {type: 'Personal', email: 'Personal@mail.com', password: 'password123'}
+    {type: 'Commercial', email: 'cgerritsma1@ebay.com', password: '33331'},
+    {type: 'Personal', email: 'pmiere3@hexun.com', password: '33334'}
 ]

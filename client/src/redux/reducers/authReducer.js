@@ -17,7 +17,7 @@ export default function (state = initialState, action){
                 ...state,
                 isAuthenticated: true,
                 token: action.payload.token,
-                isAdmin: action.payload.isAdmin
+                isAdmin: JSON.parse(action.payload.isAdmin)
             }
         case ActionTypes.LOGOUT_USER:
             localStorage.removeItem('token')

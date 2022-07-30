@@ -39,6 +39,36 @@ export const updateCustomer = customer => async dispatch => {
     }
 }
 
+export const getProfile = () => async dispatch => {
+    try {
+        const res = await axios.get(`/api/customers/profile`, config)
+        dispatch({
+            type: ActionTypes.SET_CUSTOMER,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: error.response.data
+        })
+    }
+}
+
+export const updateProfile = customer => async dispatch => {
+    try {
+        const res = await axios.patch(`/api/customers/profile/${customer._id}`, customer, config)
+        dispatch({
+            type: ActionTypes.UPDATE_PROFILE,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: error.response.data
+        })
+    }
+}
+
 export const getCustomers = () => async dispatch => {
     try {
         const res = await axios.get('/api/customers', config)

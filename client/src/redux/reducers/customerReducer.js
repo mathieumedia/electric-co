@@ -21,6 +21,11 @@ export default function (state = initialState, action){
                 currentCustomer: action.payload.customer,
                 customerAlert: action.payload.alert
             }
+        case ActionTypes.SET_CUSTOMER:
+            return {
+                ...state,
+                currentCustomer: action.payload,
+            }
         case ActionTypes.FILTER_CURRENT_CUSTOMER:
             return {
                 ...state,
@@ -33,6 +38,13 @@ export default function (state = initialState, action){
                 currentCustomer: action.payload.customer,
                 customerAlert: action.payload.alert
             }
+        case ActionTypes.UPDATE_PROFILE:
+            return {
+                ...state,
+                currentCustomer: action.payload.customer,
+                customerAlert: action.payload.alert
+            }
+
         case ActionTypes.DELETE_ALL_CUSTOMERS:
             return {
                 ...state,

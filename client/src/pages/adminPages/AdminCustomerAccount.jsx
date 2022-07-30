@@ -25,7 +25,6 @@ import * as utils from '../../middleware/utils'
 import AdminCustomerProfile from './AdminCustomerProfile';
 import AdminCustomerBilling from './AdminCustomerBilling';
 import PaymentHistory from '../customerPages/PaymentHistory';
-import { toast } from 'react-toastify';
 
 
 
@@ -134,10 +133,6 @@ export default function AdminCustomerAccount() {
     const handleUpdate = customerData => {
         dispatch(updateCustomer(customerData))
     }
-
-    
-
-    
 
     return (
         <AdminMain>
