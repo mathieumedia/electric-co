@@ -1,6 +1,5 @@
 import colors from 'colors'
 
-
 export function ExportError(res, error){
     error.message   
         ?   console.error(`ERROR: ${error.message}`.bgRed.underline.bold)

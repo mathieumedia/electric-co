@@ -10,7 +10,7 @@ import * as helper from './helperController.js'
 import bcrypt from 'bcryptjs'
 import customerData from '../data/customers.js'
 
-// #region ------------- CUSTOMER BASICS ------------
+// #region ------------- ADMIN METHODS ------------
 export async function getCustomers(req, res){
     try{
         const customers = await Customer.find().select('-__v')
@@ -174,6 +174,7 @@ export async function updateCustomer(req, res){
     }
 }
 
+
 //#region ------ BILLING METHODS -------
 export async function addCustomerBill(req, res){
     try {
@@ -245,6 +246,43 @@ export async function creditCustomerBill(req, res){
 }
 // #endregion ----------------------------------
 
+//#endregion
+
+export async function getProfile(req, res){
+    try {
+        const customer = await Customer.findOne({user: req.user.userId})
+        res.json(customer)
+    } catch (error) {
+        helper.ExportError(res, error)
+    }
+}
+
+export async function updateProfile(req, res){
+    try {
+        const customerId = req.params.customerId
+        let customer = await Customer.findById(customerId)
+
+
+        if(customer.user.toString() !== req.user.userId){
+            return res.status(401).json({message: 'Unauthorized Action', type: 'error'})
+        }
+
+        customer = await Customer.findOneAndUpdate({_id: customerId, user: req.user.userId}, req.body, {new: true})
+
+        if(!customer){
+            return res.status(400).json({message: "Unable to update. Please try again later", type: 'error'})
+        }
+
+        res.json({
+            customer,
+            alert: {message: 'Profile successfully update', type: 'success'}
+        })
+    } catch (error) {
+        helper.ExportError(res, error)
+    }
+}
+
+
 //#region Helper methods
 async function createBill({year, month, accountType}){
     const billingEnd = new Date(year, month, 0)
@@ -307,11 +345,10 @@ Date.prototype.addDays = function (days){
     return date.setDate(date.getDate() + days)
 }
 
-
-
 async function evaluateCurrentBillingStatus(start){
     const dayDifference = (new Date().getTime() - start.getTime()) / (1000 * 3600 * 24)
     return dayDifference <= 15 
         ?   await BillingStatus.findOne({name: "Current"})
         :   await BillingStatus.findOne({name: "Past Due"})
 }
+// #endregion

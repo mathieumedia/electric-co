@@ -16,7 +16,10 @@ router.post('/bills', adminAuth, customerController.addCustomerBill)
 router.post('/creditBill', adminAuth, customerController.creditCustomerBill)
 //#endregion
 
-//#region ------ PAYMENT ROUTES ---------------------
+//#region CUSTOMER ROUTES -----
+router.get('/profile', userAuth, customerController.getProfile)
+router.patch('/profile/:customerId', userAuth, customerController.updateProfile)
 //#endregion
+
 
 export default router;

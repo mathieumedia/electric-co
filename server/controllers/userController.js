@@ -46,7 +46,7 @@ export async function registerUser(req, res){
         }
 
         const payload = {
-            user: newUser._id,
+            userId: newUser._id,
             isAdmin: newUser.isAdmin
         }
 
@@ -83,8 +83,9 @@ export async function loginUser(req, res){
         }
 
         const payload = {
-            user: user._id,
-            isAdmin: user.isAdmin
+            userId: user._id,
+            isAdmin: user.isAdmin,
+            yes: "1540"
         }
 
         jwt.sign(payload, process.env.JWT_SECRET, {
