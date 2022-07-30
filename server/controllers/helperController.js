@@ -14,3 +14,10 @@ export const addDays = Date.prototype.addDays = async function addDays(days){
     return date
 }
 
+export function toFixed(amount, length = 2){
+    if(amount) {
+        return parseFloat(amount.toFixed(length));
+    }
+    return null
+}
+

@@ -4,6 +4,7 @@ export default mongoose.Schema({
     paymentDate: {type: Date},
     paymentAmount: {type: Number, default: 0},
     paymentMethod: {type: String},
+    confirmationNumber: {type: String},
     creditCard: {
         cardHolder: {type: String},
         cardNumber: {type: String},

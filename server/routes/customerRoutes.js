@@ -13,6 +13,7 @@ router.get('/repopulate', adminAuth, customerController.repopulateCustomers)
 
 
 router.post('/bills', adminAuth, customerController.addCustomerBill)
+router.post('/creditBill', adminAuth, customerController.creditCustomerBill)
 //#endregion
 
 //#region ------ PAYMENT ROUTES ---------------------
