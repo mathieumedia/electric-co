@@ -5,6 +5,7 @@ import * as utils from '../middleware/utils'
 import AdminSidebar from './AdminSidebar'
 import AdminHeader from './AdminHeader'
 
+
 //#region --------- STYLED COMPONENTS ----
 const Main = styled(Box)(({theme, open}) => ({
     flexGrow: 1,

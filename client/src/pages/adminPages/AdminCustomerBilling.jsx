@@ -1,15 +1,21 @@
 import {useState} from 'react'
 import {
     Grid, TextField, MenuItem, Button, Paper, 
-    Typography, Stack, Divider
+    Typography, Stack, Divider, Box
 } from '@mui/material'
 import * as utils from '../../middleware/utils'
 import AdminCustomerBillingTable from './AdminCustomerBillingTable'
-import { Box } from '@mui/system'
 
+import Popup from '../../components/Popup'
+import BillChart from '../../components/BillChart'
 
-export default function AdminCustomerBilling({newBillObject, account, essentials}) {
-    
+export default function AdminCustomerBilling(props) {
+    const {
+        newBillObject, account, 
+        essentials, creditObj
+    } = props
+
+    //#region ----Selected Bill ----
     
     const [selectedBill, setSelectedBill] = useState(null)
     const handleSelectedBill = bill => {
@@ -32,7 +38,7 @@ export default function AdminCustomerBilling({newBillObject, account, essentials
 
     function Row({label, value}){
         return (
-            <Box sx={{display: 'flex', flexDiretion: 'row', alignItems: 'center'}}>
+            <Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                 <Typography align='center' sx={{flexGrow: 1}}>
                     {`${label}: ${value}`}
                 </Typography>
@@ -40,8 +46,48 @@ export default function AdminCustomerBilling({newBillObject, account, essentials
         )
     }
 
+    //#endregion ---
+
+    const [open, setOpen] = useState(false)
+
+
+    function calculateAccountBalance(){
+        let balance = 0
+        balance = account?.monthlyBills?.reduce((acc, bill) => {return acc + bill.balance}, 0)
+        return utils.formatCurrency(balance)
+    }
+
+    const handleConfirm = () =>{
+        creditObj?.confirmCredit()
+        setOpen(false)
+    }
+
+    const handleCredit = (bill) => {
+        setOpen(true)
+        creditObj?.initializeNewCredit(bill)
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
+
     return (
         <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <Paper sx={{p: 1}}>
+                    <Typography variant='h6' align='left'>
+                        {`Account Balance: ${calculateAccountBalance()}`}
+                    </Typography>
+                </Paper>
+            </Grid>
+
+            <Grid item xs={12}>
+                {selectedBill 
+                    ?   <BillChart bill={selectedBill} /> 
+                    :   <SelectedBillPrompt  />
+                }
+            </Grid>
+
             <Grid item xs={12} md={8}>
                 <Paper sx={{p: 1}}>
                     <Grid container spacing={2}>
@@ -76,15 +122,28 @@ export default function AdminCustomerBilling({newBillObject, account, essentials
                             <AdminCustomerBillingTable 
                                 selectedBillObj={selectedBillObj}
                                 monthlyBills={account?.monthlyBills} 
-                                essentials={essentials} />
+                                essentials={essentials}
+                                handleCredit={handleCredit} />
                         </Grid>
                     </Grid>
+                    <Popup open={open} title={"Apply Credit"} clickAway handleClose={handleClose}>
+                        <Stack spacing={2} direction='row' sx={{pt: 1}}>
+                            <TextField
+                                type='number' autoFocus={true}
+                                label='Credit Amount' name='creditAmount'
+                                value={creditObj?.newCredit?.creditAmount}
+                                onChange={creditObj?.handleCreditChange}
+                            />
+                            <Button size='small' onClick={handleConfirm}>Apply</Button>
+                            <Button variant='outlined' onClick={handleClose}>Cancel</Button>
+                        </Stack>   
+                    </Popup>
                 </Paper>
             </Grid>
             
             <Grid item xs={12} md={4}>
                 <SelectedBillPrompt />
-                <Paper sx={{display: selectedBill ? 'block' : 'none'}}>
+                <Paper sx={{display: selectedBill ? 'block' : 'none', px: 1}}>
                     <Stack spacing={1} sx={{py:2}}>
                         <Divider>Billing Details</Divider>
                         <Row 

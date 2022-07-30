@@ -54,6 +54,14 @@ export default createTheme({
         },
 
         MuiSvgIcon: {
+            variants:[
+                {
+                    props: {variant: 'light'},
+                    style:{
+                        color: white
+                    }
+                }
+            ],
             styleOverrides: {
                 root: {
                     color: primary,

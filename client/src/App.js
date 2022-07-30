@@ -17,7 +17,7 @@ import AdminCustomerAccount from './pages/adminPages/AdminCustomerAccount';
 function App() {
     return (
         <div className="App">
-            <SimpleBar style={{maxHeight:'100vh', height: '100vh'}}>
+            {/* <SimpleBar style={{minHeight:'100vh', height: '100vh'}}> */}
                 <Router>
                     <Routes>
                         <Route path='/' element={<LoginPage  />} />
@@ -43,7 +43,7 @@ function App() {
                     </Routes>
                 </Router>
 
-            </SimpleBar>
+            {/* </SimpleBar> */}
         </div>
     );
 }

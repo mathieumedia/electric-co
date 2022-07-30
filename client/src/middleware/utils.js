@@ -42,7 +42,7 @@ export function BeautifyAlert(obj){
 }
 
 export function Alert(alert, dispatch, clear){
-    toast(alert.message, {type: alert.type})
+    toast(alert.message, {type: alert.type, toastId: alert.message})
     if(clear) dispatch(clear())
 }
 
@@ -50,7 +50,6 @@ export function getName(arr, id){
     if(arr && id){
         return (arr.find(obj => obj._id === id)).name
     }
-
     return ''
 }
 
@@ -86,7 +85,7 @@ export function formatCurrency(amount){
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: 'USD',
-        minimumFractionDigits: 0
+        minimumFractionDigits: 2
     })
 
     return formatter.format(amount)
@@ -98,6 +97,17 @@ export function shortDate(date){
         return `${newDate.getMonth() + 1}/${newDate.getDate()}/${newDate.getFullYear()}`
     }
     return ''
+}
+
+export function Mask(originalString, length = 4){
+    let newString = []
+
+    if(originalString){
+        for(let i = 0; i < originalString.length; i++){
+            i < originalString.length - length ? newString.push('*') : newString.push(originalString[i])
+        }
+    }
+    return newString.join('')
 }
 
 

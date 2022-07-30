@@ -26,7 +26,12 @@ root.render(
                 </LocalizationProvider>
             </ThemeProvider>
         </Provider>
-        <ToastContainer rtl={true} autoClose={3000} />
+        <ToastContainer 
+            //theme='theme'
+            limit={3} position='top-center'
+            rtl={false} autoClose={2000} 
+            pauseOnFocusLoss={false}
+        />
     </React.StrictMode>
 );
 

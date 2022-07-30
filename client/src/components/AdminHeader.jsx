@@ -43,9 +43,7 @@ export default function AdminHeader(props) {
     const [open, setOpen] = useState(false)
     const [onPopulate, setOnPopulate] = useState(false)
 
-    
-
-    const {customerAlert} = useSelector(state => state.customers)
+    const {customerAlert, customers} = useSelector(state => state.customers)
 
     const handleUserOpenMenu = (event) => {
         setAnchorElUser(event.currentTarget)
@@ -81,6 +79,7 @@ export default function AdminHeader(props) {
         dispatch(deleteAllCustomers())
         setOpen(false)
         handleUserCloseMenu()
+        navigate('/admin/customers')
     }
 
     const handleConfirmPopulate = () => {
@@ -138,12 +137,16 @@ export default function AdminHeader(props) {
                         open={Boolean(anchorElUser)}
                         onClose={handleUserCloseMenu}
                     >
-                        <MenuItem onClick={handleDeleteCustomers}>
-                            <Typography textAlign='center'>Delete Customers</Typography>
-                        </MenuItem>
-                        <MenuItem onClick={handleRepopulateCustomer}>
-                            <Typography textAlign='center'>Repopulate</Typography>
-                        </MenuItem>
+                        {(customers && customers.length > 0) &&
+                            <MenuItem onClick={handleDeleteCustomers}>
+                                <Typography textAlign='center'>Delete Customers</Typography>
+                            </MenuItem>
+                        }
+                        {(customers && customers.length === 0) &&
+                            <MenuItem onClick={handleRepopulateCustomer}>
+                                <Typography textAlign='center'>Repopulate</Typography>
+                            </MenuItem>
+                        }
                         <Divider />
                         <MenuItem onClick={handleLogout}>
                             <Typography textAlign='center'>Logout</Typography>

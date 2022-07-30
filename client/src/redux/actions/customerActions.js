@@ -107,6 +107,22 @@ export const repopulateCustomers = () => async dispatch => {
     }
 }
 
+export const creditCustomerBill = credit => async dispatch => {
+    try {
+        
+        const res = await axios.post(`/api/customers/creditBill`, credit, config)
+        dispatch({
+            type: ActionTypes.UPDATE_CUSTOMER,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: error.response.data
+        })
+    }
+}
+
 
 
 export const clearCustomerAlert = () => async dispatch => dispatch({type: ActionTypes.CLEAR_ERROR})

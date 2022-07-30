@@ -6,13 +6,17 @@ import {
 } from '@mui/material'
 import PaginationActions from '../../components/PaginationActions'
 import * as utils from '../../middleware/utils'
+import AddIcon from '@mui/icons-material/Add'
 
-
-export default function AdminCustomerBillingTable({monthlyBills, essentials, selectedBillObj}){
+export default function AdminCustomerBillingTable(props){
+    const {
+        monthlyBills, essentials, 
+        selectedBillObj, handleCredit
+    } = props
     const [customerBills, setCustomerBills] = useState(monthlyBills)
     useEffect(() => {
         if(monthlyBills){
-            setCustomerBills(monthlyBills)
+            setCustomerBills(monthlyBills.sort((a,b) => new Date(b.billingEnd).setHours(0,0,0,0) - new Date(a.billingEnd).setHours(0,0,0,0))) 
         }
 
     }, [monthlyBills])
@@ -53,7 +57,11 @@ export default function AdminCustomerBillingTable({monthlyBills, essentials, sel
                                 <TableCell onClick={() => selectedBillObj?.handleSelectedBill(bill)}>{utils.formatCurrency(bill.balance)}</TableCell>
                                 <TableCell onClick={() => selectedBillObj?.handleSelectedBill(bill)}>{utils.getName(essentials?.billingStatuses, bill.status)}</TableCell>
                                 <TableCell align='right'>
-                                    <Button>Credit</Button>
+                                    <Button 
+                                        startIcon={<AddIcon variant='light' />}
+                                        onClick={() => handleCredit(bill)}>
+                                            Credit
+                                    </Button>
                                 </TableCell>
                             </TableRow>
                         ))                  
