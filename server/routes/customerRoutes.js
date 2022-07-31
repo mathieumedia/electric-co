@@ -19,6 +19,7 @@ router.post('/creditBill', adminAuth, customerController.creditCustomerBill)
 //#region CUSTOMER ROUTES -----
 router.get('/profile', userAuth, customerController.getProfile)
 router.patch('/profile/:customerId', userAuth, customerController.updateProfile)
+router.post('/payments/:customerId', userAuth, customerController.makePayment)
 //#endregion
 
 

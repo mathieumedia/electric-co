@@ -3,6 +3,7 @@ import MonthlyBill from '../models/MonthlyBill.js'
 import AccountType from '../models/AccountType.js'
 import BillingStatus from '../models/BillingStatus.js'
 import Address from '../models/Address.js'
+import Payment from '../models/Payment.js'
 import User from '../models/User.js'
 import State from '../models/State.js'
 import Gender from '../models/Gender.js'
@@ -262,7 +263,7 @@ export async function updateProfile(req, res){
         const customerId = req.params.customerId
         let customer = await Customer.findById(customerId)
 
-
+        
         if(customer.user.toString() !== req.user.userId){
             return res.status(401).json({message: 'Unauthorized Action', type: 'error'})
         }
@@ -273,6 +274,8 @@ export async function updateProfile(req, res){
             return res.status(400).json({message: "Unable to update. Please try again later", type: 'error'})
         }
 
+        
+
         res.json({
             customer,
             alert: {message: 'Profile successfully update', type: 'success'}
@@ -282,8 +285,95 @@ export async function updateProfile(req, res){
     }
 }
 
+export async function makePayment(req, res){
+    try {
+        const customerId = req.params.customerId
+        let customer = await Customer.findById(customerId)
+
+        if(customer.user.toString() !== req.user.userId){
+            return res.status(401).json({message: 'Unauthorized Action', type: 'error'})
+        }
+
+        // 1 - Create payment entry and insert into customer paymenthistory
+        let payment = await createPayment(req.body)
+        customer.paymentHistory.push(payment)
+        let paymentAmount = payment.paymentAmount
+        
+
+        // 2 find customer bills with balance > 0
+        customer.monthlyBills.filter(b => b.balance > 0)
+            .sort(function(b, a) {return new Date(b.dueDate) - new Date(a.dueDate)})
+            .every(bill => {
+                let paidAmount = 0;
+                if(paymentAmount > bill.balance){
+                    paidAmount = bill.balance;
+                    paymentAmount -= paidAmount
+                } else {
+                    paidAmount = paymentAmount;
+                    paymentAmount = 0
+                }
+
+                bill.balance -= paidAmount;
+                bill.paidDate = payment.paymentDate
+
+                // if(bill.balance === 0){
+                //     bill.status = await BillingStatus.findOne({name: 'Paid'})
+                // }else {
+                //     bill.status = await evaluateCurrentBillingStatus(bill.billingEnd)
+                // }
+
+                if(paymentAmount > 0){
+                    return true
+                } else {
+                    false
+                }
+            })
+
+        for(let i = 0; i < customer.monthlyBills.length; i++){
+            const bill = customer.monthlyBills[i];
+
+            if(bill.balance === 0){
+                bill.status = await BillingStatus.findOne({name: 'Paid'})
+            }else {
+                bill.status = await evaluateCurrentBillingStatus(bill.billingEnd)
+            }
+        }
+        
+
+        console.log(customer)
+
+        // while paymentAmount > 0
+        // 3 subtract bill.balance from paymentAmount
+        // 4 set bill.balance to 0 and update will status if possible
+        await customer.save();
+        res.json({
+            customer,
+            alert: {message: 'Payment successfully made', type: 'success'}
+        })
+    } catch (error) {
+        helper.ExportError(res, error)
+    }
+}
+
 
 //#region Helper methods
+
+async function createPayment(paymentObj){
+    const {paymentAmount, paymentMethod, creditCard, banking, paymentDate} = paymentObj;
+    
+    let payment = {
+        paymentAmount: parseFloat(paymentAmount),
+        paymentMethod,
+        paymentDate,
+        confirmationNumber: Math.random().toString(36).slice(2)
+    }
+
+    if(banking) payment.banking = banking;
+    if(creditCard) payment.creditCard = creditCard
+
+    return payment;
+}
+
 async function createBill({year, month, accountType}){
     const billingEnd = new Date(year, month, 0)
     const billingDays = billingEnd.getDate();
@@ -325,21 +415,6 @@ async function createBill({year, month, accountType}){
     return bill;
 }
 
-async function createPayment(paymentMethodObj){
-    const {paymentAmount, paymentMethod, creditCard, banking} = paymentMethodObj
-
-    let payment = {
-        paymentDate: new Date(),
-        paymentAmount,
-        paymentMethod,
-        confirmationNumber: Math.random().toString(36).slice(2)
-    }
-    if(banking) payment = {...payment, banking}
-    if(creditCard) payment = {...payment, creditCard}
-    
-    return payment
-}
-
 Date.prototype.addDays = function (days){
     let date = new Date(this.valueOf())
     return date.setDate(date.getDate() + days)
@@ -350,5 +425,23 @@ async function evaluateCurrentBillingStatus(start){
     return dayDifference <= 15 
         ?   await BillingStatus.findOne({name: "Current"})
         :   await BillingStatus.findOne({name: "Past Due"})
+}
+
+async function updateStatus(bill){
+    let status;
+    
+    if(bill.balance === 0){
+        status = await BillingStatus.findOne({name: 'Paid'})
+    } else {
+        const dayDifference = (new Date().getTime() - new Date(bill.billingEnd).getTime())
+        / (1000 * 3600 * 24)   
+        
+        if(dayDifference > 15){
+            status = await BillingStatus.findOne({name: "Past Due"})
+        } else {
+            status = await BillingStatus.findOne({name: "Current"})
+        }
+        return {...bill, status: status._id}
+    }
 }
 // #endregion

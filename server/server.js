@@ -31,3 +31,5 @@ app.use('/api/users', userRoutes)
 app.use('/api/essentials', essentialRoutes)
 app.use('/api/customers', customerRoutes)
 app.listen(PORT, () => console.info(`Server is running on port ${PORT}\n`.green.underline.bold));
+
+
