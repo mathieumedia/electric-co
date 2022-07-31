@@ -91,6 +91,48 @@ export function formatCurrency(amount){
     return formatter.format(amount)
 }
 
+export function FormatPhone(value){
+    if(value){
+        var cleaned = ('' + value).replace(/\D/g, '');
+        var match = cleaned.match(/^(1|)?(\d{3})(\d{3})(\d{4})$/);
+        if (match) {
+            var intlCode = (match[1] ? '+1 ' : '');
+            return [intlCode, '(', match[2], ') ', match[3], '-', match[4]].join('');
+        }
+        return null;
+    }
+}
+
+export function FormatCreditCard(value){
+    if(value){
+        let v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+        let matches = v.match(/\d{4,16}/g);
+        let match = matches && matches[0] || ''
+        let parts = []
+
+        for (let i=0, len=match.length; i<len; i+=4) {
+            parts.push(match.substring(i, i + 4))
+        }
+
+        if (parts.length) {
+            return parts.join('-')
+        } else {
+            return value
+        }
+    }
+}
+
+export function FormatSSN(value){
+
+    if(value){
+        let v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+        v = v.replace(/^(\d{3})/, '$1-');
+        v = v.replace(/-(\d{2})/, '-$1-');
+        v = v.replace(/(\d)-(\d{4}).*/, '$1-$2');
+        return v;
+    }
+}
+
 export function shortDate(date){
     if(date){
         const newDate = new Date(date);

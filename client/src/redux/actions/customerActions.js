@@ -69,6 +69,21 @@ export const updateProfile = customer => async dispatch => {
     }
 }
 
+export const makePayment = newPayment => async dispatch => {
+    try {
+        const res = await axios.post(`/api/customers/payments/${newPayment.customerId}`, newPayment, config)
+        dispatch({
+            type: ActionTypes.UPDATE_PROFILE,
+            payload: res.data
+        })
+    } catch (error) {
+        dispatch({
+            type: ActionTypes.SET_ERROR,
+            payload: error.response.data
+        })
+    }
+}
+
 export const getCustomers = () => async dispatch => {
     try {
         const res = await axios.get('/api/customers', config)
