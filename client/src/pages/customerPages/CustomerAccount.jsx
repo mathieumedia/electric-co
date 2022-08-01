@@ -21,7 +21,7 @@ import * as utils from '../../middleware/utils'
 
 import CustomerProfile from './CustomerProfile';
 import CustomerBilling from './CustomerBilling';
-// import PaymentHistory from '../customerPages/PaymentHistory';
+import PaymentHistory from './PaymentHistory';
 
 
 
@@ -118,9 +118,9 @@ export default function CustomerAccount() {
                         />
                     </TabPanel>
 
-                    {/* <TabPanel value={'Payment History'}>
+                    <TabPanel value={'Payment History'}>
                         <PaymentHistory history={account?.paymentHistory}  />
-                    </TabPanel> */}
+                    </TabPanel> 
                 </TabContext>
             </Paper>
         </CustomerMain>

@@ -35,7 +35,7 @@ export default function CreditCardForm({creditCard, onChange}) {
                 name='cardHolder' onChange={onChange}
             />
             <TextField
-                label={'Card Number'} value={utils.FormatCreditCard(creditCard?.cardNumber)}
+                label={'Card Number'} value={creditCard?.cardNumber}
                 name='cardNumber' onChange={onChange} type='number'
                 InputProps={{
                     startAdornment: (
