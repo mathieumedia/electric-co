@@ -2,21 +2,20 @@ import {toast} from 'react-toastify'
 
 import Color from 'color'
 // #region ------ Background Images --------------
-import brian from '../backgrounds/brian-wangenheim-unsplash.jpg';
 import lars from '../backgrounds/lars-van-poucke-unsplash.jpg';
 import leandra from '../backgrounds/leandra-rieger-unsplash.jpg';
 import misty from '../backgrounds/misty-unsplash.jpg';
 import rob from '../backgrounds/rob-potter-unsplash.jpg'
-import visax from '../backgrounds/visax-unsplash.jpg';
 // #endregion ----------------
 
 export const drawerWidth = 240;
 
 export function BgImage(){
     const list = [
-        // brian, lars, 
+        lars, 
         leandra, 
-        // misty, rob, visax
+        misty, 
+        rob, 
     ]
     return {
         background: `url(${list[Math.floor(Math.random() * list.length)]})`,
@@ -91,6 +90,7 @@ export function formatCurrency(amount){
     return formatter.format(amount)
 }
 
+/**
 export function FormatPhone(value){
     if(value){
         var cleaned = ('' + value).replace(/\D/g, '');
@@ -121,17 +121,17 @@ export function FormatCreditCard(value){
         }
     }
 }
+*/
+// export function FormatSSN(value){
 
-export function FormatSSN(value){
-
-    if(value){
-        let v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
-        v = v.replace(/^(\d{3})/, '$1-');
-        v = v.replace(/-(\d{2})/, '-$1-');
-        v = v.replace(/(\d)-(\d{4}).*/, '$1-$2');
-        return v;
-    }
-}
+//     if(value){
+//         let v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+//         v = v.replace(/^(\d{3})/, '$1-');
+//         v = v.replace(/-(\d{2})/, '-$1-');
+//         v = v.replace(/(\d)-(\d{4}).*/, '$1-$2');
+//         return v;
+//     }
+// }
 
 export function shortDate(date){
     if(date){

@@ -1,5 +1,4 @@
 import * as ActionTypes from '../ActionTypes';
-import * as helper from '../../middleware/utils'
 import axios from 'axios';
 
 const config = {

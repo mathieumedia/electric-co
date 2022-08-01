@@ -182,6 +182,8 @@ export async function addCustomerBill(req, res){
 
         const {customerId, year, month} = req.body;
 
+        console.log(req.body)
+
         let customer = await Customer.findById(customerId)
 
         if(!customer){
@@ -315,12 +317,6 @@ export async function makePayment(req, res){
 
                 bill.balance -= paidAmount;
                 bill.paidDate = payment.paymentDate
-
-                // if(bill.balance === 0){
-                //     bill.status = await BillingStatus.findOne({name: 'Paid'})
-                // }else {
-                //     bill.status = await evaluateCurrentBillingStatus(bill.billingEnd)
-                // }
 
                 if(paymentAmount > 0){
                     return true

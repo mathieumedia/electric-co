@@ -81,7 +81,7 @@ export default function AdminCustomerAccount() {
     const handleCreateNewBill = () => {
 
         if(!newBill.year || !newBill.month){
-            return utils.Alert("A Billing Month and/or Year is required", "error")
+            return utils.Alert({message: "A Billing Month and/or Year is required", type: "error"})
         }
 
         dispatch(addCustomerBill({...newBill, customerId: id}))

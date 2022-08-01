@@ -1,12 +1,11 @@
-import {useState} from 'react'
-import {styled, Box, CssBaseline} from '@mui/material'
+import {styled, Box, CssBaseline, Container} from '@mui/material'
 import * as utils from '../middleware/utils'
 
 import CustomerHeader from './CustomerHeader'
 
 
 //#region --------- STYLED COMPONENTS ----
-const Main = styled(Box)(({theme}) => ({
+const Main = styled(Container)(({theme}) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
 }))

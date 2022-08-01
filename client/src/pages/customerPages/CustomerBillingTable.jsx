@@ -2,11 +2,10 @@ import {useState, useEffect} from 'react'
 import {
     Paper, TableHead, TableContainer, Table,
     TableRow, TableCell, TableBody,
-    TableFooter, TablePagination, Button
+    TableFooter, TablePagination, 
 } from '@mui/material'
 import PaginationActions from '../../components/PaginationActions'
 import * as utils from '../../middleware/utils'
-import AddIcon from '@mui/icons-material/Add'
 
 export default function CustomerBillingTable(props){
     const {

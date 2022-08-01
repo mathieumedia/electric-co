@@ -111,9 +111,9 @@ export default function AdminHeader(props) {
                 >
                     <MenuIcon />
                 </IconButton>
-                <Typography variant='h6' noWrap component='div' sx={{color: 'white'}}>Electric Co</Typography>
+                <Typography variant='h6' noWrap component='div' sx={{color: 'white', display: {xs: 'none', sm: 'none'}}}>Electric Co</Typography>
                 
-                <Box sx={{flexGrow: 1, display: {xs: 'none', sm: 'flex', md: 'flex'}}} />
+                <Box sx={{flexGrow: 1}} />
 
                 <Box sx={{flexGrow: 0}}>
                     <IconButton

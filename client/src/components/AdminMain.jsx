@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {styled, Box, CssBaseline} from '@mui/material'
+import {styled, Box, CssBaseline, Container} from '@mui/material'
 import * as utils from '../middleware/utils'
 
 import AdminSidebar from './AdminSidebar'
@@ -53,7 +53,9 @@ export default function AdminMain(props) {
             <AdminSidebar open={open} handleDrawerClose={() => setOpen(false)} />
             <Main open={open} >
                 <DrawerHeader  />
-                {props.children}
+                <Container>
+                    {props.children}
+                </Container>
             </Main>
         </Div>
     )
